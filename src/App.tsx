@@ -24,7 +24,7 @@ function App() {
   const tasks_3 = [
     {id: 7, title: "TodoList", isDone: true},
     {id: 8, title: "Way of Samuraj", isDone: false},
-    {id: 9, title: "Microtasks", isDone: false},
+    {id: 8, title: "Microtasks", isDone: false},
   ]
 
 
