@@ -1,36 +1,44 @@
 import React from 'react';
 
-type tasksType = {
+export type tasksType = {
     id: number,
     title: string,
     isDone: boolean,
 }
 
+export type FilterType = "all" | "completed" | "active"
+
 type todoListPropsType = {
     title: string,
     tasks: Array<tasksType>,
+    deleteTask: (id: number) => void
+    changeFilter: (filterValue: FilterType)=> void
 }
 
-function TodoList (props: todoListPropsType){
+
+export const TodoList: React.FC<todoListPropsType> = ({title, tasks, deleteTask, changeFilter}) =>{
+
+    const TasksElements = tasks.map(t => (<li><input  key={t.id} type='checkbox' checked={t.isDone}/> <span>{t.title}</span><button onClick={() => {deleteTask(t.id)
+    }}>x</button></li>))
+
     return (
         <div>
-            <h3>{props.title}</h3>
+            <h3>{title}</h3>
             <div>
                 <input/>
                 <button>+</button>
             </div>
             <ul>
-                <li><input  key={props.tasks[0].id} type='checkbox' checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span></li>
-                <li><input  key={props.tasks[1].id} type='checkbox' checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span></li>
-                <li><input  key={props.tasks[2].id} type='checkbox' checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span></li>
+                {
+                    TasksElements
+                }
+
             </ul>
             <div>
-                <button>All</button>
-                <button>Active</button>
-                <button>Completed</button>
+                <button onClick={() => changeFilter("completed")}>completed</button>
+                <button onClick={() => changeFilter("active")}>active</button>
+                <button onClick={() => changeFilter("all")}>all</button>
             </div>
         </div>
     );
 };
-
-export default TodoList;
