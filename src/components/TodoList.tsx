@@ -14,19 +14,17 @@ type todoListPropsType = {
     deleteTask: (id: string) => void
     addTask: (newTaskTitle: string) => void
     changeFilter: (filterValue: FilterType)=> void
-    changeTaskStatus: (id: string, isDone: boolean) => void
 }
 
 
-export const TodoList: React.FC<todoListPropsType> = ({title, tasks, addTask, deleteTask, changeFilter, changeTaskStatus}) =>{
+export const TodoList: React.FC<todoListPropsType> = ({title, tasks, addTask, deleteTask, changeFilter}) =>{
 
-    const TasksElements = tasks.map(task => (<li key={task.id}><input type='checkbox' checked={task.isDone} onChange={(event) => changeTaskStatusHandler(task.id, event.currentTarget.checked)}/> <span>{task.title}</span><button onClick={() => {deleteTask(task.id)
+    const TasksElements = tasks.map(task => (<li key={task.id}><input type='checkbox' checked={task.isDone}/> <span>{task.title}</span><button onClick={() => {deleteTask(task.id)
     }}>x</button></li>))
 
     const [taskTextInput, SetTaskTextInput] = useState("")
 
     const changeFilterHandler = (filter: FilterType) => changeFilter(filter)
-    const changeTaskStatusHandler = (id: string, isDone: boolean) => changeTaskStatus(id, isDone)
     const changeTaskInputHandler = (event: ChangeEvent<HTMLInputElement>) => SetTaskTextInput(event.currentTarget.value)
     const addTaskHandler = () => {
         addTask(taskTextInput)
