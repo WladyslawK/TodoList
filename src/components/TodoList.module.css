@@ -1,0 +1,24 @@
+.tasksList{
+    list-style: none;
+}
+.btn {
+    margin-left: 5px;
+    border-radius: 5px;
+    border: 1px black solid
+}
+.error{
+    border: 1px red solid;
+}
+.errorMessage{
+    color: red;
+}
+.btnActive{
+    background-color: greenyellow;
+}
+.completedTasks{
+    text-decoration: line-through;
+}
+.listTitle{
+    display: flex;
+    justify-content: center;
+}

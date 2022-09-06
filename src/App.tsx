@@ -38,6 +38,17 @@ function App() {
         setFilter(filterValue)
     }
 
+    const addTask = (newTitle: string) => {
+        let newTask = {
+            id: v1(),
+            title: newTitle,
+            isDone: false
+        }
+        setTasks([newTask, ...tasks])
+    }
+
+    const changeStatus = (id: string, isDone: boolean) => setTasks(tasks.map(task => task.id === id ? {...task, isDone} : task))
+
     const filteredTasks = () => {
         switch (filter){
             case "completed":
@@ -49,20 +60,13 @@ function App() {
         }
     }
 
-    const addTask = (newTitle: string) => {
-        let newTask = {
-            id: v1(),
-            title: newTitle,
-            isDone: false
-        }
-        setTasks([newTask, ...tasks])
-    }
+
 
     //UI
 
     return (
         <div className="App">
-            <TodoList title={title_1} tasks={filteredTasks()} addTask={addTask} deleteTask={deleteTask} changeFilter={changeFilter}/>
+            <TodoList title={title_1} tasks={filteredTasks()} addTask={addTask} deleteTask={deleteTask} changeFilter={changeFilter} changeStatus={changeStatus} filter={filter}/>
             {/*<TodoList title={title_2} tasks={tasks_2}/>
             <TodoList title={title_3} tasks={tasks_3}/>*/}
         </div>
