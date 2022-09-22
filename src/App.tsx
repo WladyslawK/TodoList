@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import {FilterType, TasksType, TodoList} from "./components/TodoList";
 import {v1} from "uuid";
+import {Input} from "./components/Input";
 
 type ListType = {
     id: string
@@ -16,12 +17,6 @@ type ObjectTasksType = {
 function App() {
 
     //BLL
-   /* const [tasks, setTasks] = useState<Array<TasksType>>([
-        {id: v1(), title: "HTML&CSS", isDone: true},
-        {id: v1(), title: "JS", isDone: true},
-        {id: v1(), title: "React", isDone: false},
-    ])*/
-
     const listID1 = v1()
     const listID2 = v1()
 
@@ -43,8 +38,6 @@ function App() {
         ]
     })
 
-
-
     const deleteTask = (listId: string, taskId: string) => setTasks({...tasks, [listId]: tasks[listId].filter(task => task.id !== taskId)})
 
     const changeFilter = (listID: string, filterValue: FilterType) => {
@@ -56,7 +49,6 @@ function App() {
     const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => setTasks({...tasks, [listId]: tasks[listId].map(task => task.id === taskId ? {...task, isDone} : task)})
 
     const deleteList = (listId: string) => setLists(lists.filter(list => list.id !== listId))
-
 
     const filteredTasks = (filter: FilterType, tasks: TasksType[]) => {
         switch (filter) {
@@ -70,17 +62,26 @@ function App() {
         }
     }
 
+    const addTodoList = (newTitle: string) => {
+        const newListId = v1()
+        setLists([{id: newListId, title: newTitle, filter: "all"}, ...lists])
+        setTasks({...tasks, [newListId]: []})
+    }
+
+    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => setTasks({...tasks, [todoListID]: tasks[todoListID].map(task => task.id === taskID ? {...task, title: newTitle} : task)})
+
+    const editTodoListTitle = (listID: string, newTitle: string) => setLists(lists.map(list => list.id === listID ? {...list, title: newTitle} : list))
+
 
     //UI
-
     return (
         <div className="App">
+            <Input callback={addTodoList}/>
             {
                 lists.map(list => {
-                    return <TodoList key={list.id} listId={list.id} filter={list.filter} title={list.title} tasks={filteredTasks(list.filter, tasks[list.id])} deleteTask={deleteTask} addTask={addNewTask} changeFilter={changeFilter} changeStatus={changeTaskStatus} deleteList={deleteList}/>
+                    return <TodoList key={list.id} listId={list.id} filter={list.filter} title={list.title} tasks={filteredTasks(list.filter, tasks[list.id])} deleteTask={deleteTask} addTask={addNewTask} changeFilter={changeFilter} changeStatus={changeTaskStatus} deleteList={deleteList} editTaskTitle={editTaskTitle} editTodoListTitle={editTodoListTitle}/>
                 })
             }
-           {/* <TodoList title={title_1} tasks={filteredTasks()} addTask={addTask} deleteTask={deleteTask} changeFilter={changeFilter} changeStatus={changeStatus} filter={filter}/>*/}
         </div>
     );
 }
