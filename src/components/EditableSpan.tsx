@@ -1,5 +1,6 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import style from "./TodoList.module.css"
+import {TextField} from "@mui/material";
 
 type EditableSpanType = {
     title: string
@@ -17,14 +18,30 @@ export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callbac
         setEdit(!edit)
     }
 
+    const onKeyDownHandler = (e: KeyboardEvent<HTMLDivElement>) => {
+        if(e.key === "Enter") changeEditHandler()
+    }
+
     const changeCurrentTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCurrentTitle(e.currentTarget.value)
         callback(currentTitle)
     }
     return (
         edit ?
-            <input value={currentTitle} onChange={changeCurrentTitleHandler} autoFocus onBlur={changeEditHandler}/> :
-            <span className={isDone ? style.completedTasks : ""} onDoubleClick={changeEditHandler}>{currentTitle}</span>
+            <TextField
+                size={"small"}
+                label="Type in ..."
+                value={currentTitle}
+                onKeyDown={onKeyDownHandler}
+                onBlur={changeEditHandler}
+                onChange={changeCurrentTitleHandler}
+                autoFocus
+            /> :
+
+            <span
+                className={isDone ? style.completedTasks : ""} onDoubleClick={changeEditHandler}>
+                {currentTitle}
+            </span>
 
     );
 };

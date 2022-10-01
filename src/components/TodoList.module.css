@@ -18,7 +18,3 @@
 .completedTasks{
     text-decoration: line-through;
 }
-.listTitle{
-    display: flex;
-    justify-content: center;
-}
