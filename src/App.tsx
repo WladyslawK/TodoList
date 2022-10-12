@@ -6,13 +6,13 @@ import {Input} from "./components/Input";
 import {ButtonAppBar} from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 
-type ListType = {
+export type ListType = {
     id: string
     title: string
     filter: FilterType
 }
 
-type ObjectTasksType = {
+export type ObjectTasksType = {
     [id: string]: TasksType[]
 }
 
