@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {ObjectTasksType} from "../../App";
-import {addNewTask, deleteTaskAC, tasksReducerTest} from "./TasksReducer";
+import {addNewTask, changeTaskStatusAC, deleteTaskAC, editTaskTitleAC, tasksReducerTest} from "./TasksReducer";
 const listID1 = v1()
 const listID2 = v1()
 
@@ -41,3 +41,24 @@ test("Add new task to first List", () => {
     expect(newTasks[listID1][0].title).toBe("Angular")
 })
 
+test("change React task Status in list 1", () => {
+
+    //action
+    const newTasks = tasksReducerTest(tasks, changeTaskStatusAC(listID1, "2",true))
+
+
+    //expect
+    expect(newTasks[listID1][1].title).toBe("Meat")
+    expect(newTasks[listID1][1].title).not.toBe(tasks[listID1][1].title)
+})
+
+test("change title of the task in the list 2", () => {
+
+    //action
+    const newTasks = tasksReducerTest(tasks, editTaskTitleAC(listID2, "5","Meat"))
+
+
+    //expect
+    expect(newTasks[listID2][1].isDone).toBe(true)
+    expect(newTasks[listID2][1].isDone).not.toBe(tasks[listID1][1].isDone)
+})
