@@ -1,6 +1,5 @@
-import {useState} from "react";
 import {v1} from "uuid";
-import {ListType, ObjectTasksType} from "../App";
+import {ListType, ObjectTasksType} from "../../App";
 import {changeFilterAC, changeListTitleAC, deleteListAC, ListsReducers} from "./ListsReducer";
 
 

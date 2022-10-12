@@ -1,5 +1,5 @@
-import {ListType} from "../App";
-import {FilterType} from "../components/TodoList";
+import {ListType} from "../../App";
+import {FilterType} from "../TodoList";
 
 const DELETE_LIST = "DELETE-LIST"
 const CHANGE_FILTER = "CHANGE-FILTER"
