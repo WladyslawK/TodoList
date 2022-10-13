@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import style from "./TodoList.module.css"
 import {Input} from "./Input";
 import {EditableSpan} from "./EditableSpan";
@@ -73,7 +73,7 @@ export const TodoList: React.FC<todoListPropsType> = ({
         marginLeft: "5px",
     }
 
-    const TasksElements = tasks.map(task => {
+    const TasksElements = tasks && tasks.map(task => {
 
             /*const changeTitleHandler = (newTitle: string) => editTaskTitle(listId, task.id, newTitle)*/
 

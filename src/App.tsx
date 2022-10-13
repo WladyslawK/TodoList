@@ -1,10 +1,25 @@
-import React, {useState} from 'react';
+import React, {useReducer, useState} from 'react';
 import './App.css';
 import {FilterType, TasksType, TodoList} from "./components/TodoList";
 import {v1} from "uuid";
 import {Input} from "./components/Input";
 import {ButtonAppBar} from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
+import {
+    addTodoListAC,
+    changeFilterAC,
+    changeListTitleAC,
+    deleteListAC,
+    ListsReducer
+} from "./components/Reducers/ListsReducer";
+import {
+    addEmptyArrayAC,
+    addNewTaskAC,
+    changeTaskStatusAC,
+    deleteTaskAC,
+    editTaskTitleAC,
+    tasksReducer
+} from "./components/Reducers/TasksReducer";
 
 export type ListType = {
     id: string
@@ -22,12 +37,12 @@ function App() {
     const listID1 = v1()
     const listID2 = v1()
 
-    const [lists, setLists] = useState<ListType[]>([
+    const [lists, listsDispatch] = useReducer(ListsReducer,[
         {id: listID1, title: "What to Learn", filter: "active"},
         {id: listID2, title: "What to buy", filter: "all"},
     ])
 
-    let [tasks, setTasks] = useState<ObjectTasksType>({
+    let [tasks, tasksDispatch] = useReducer(tasksReducer, {
         [listID1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -40,26 +55,16 @@ function App() {
         ]
     })
 
-    const deleteTask = (listId: string, taskId: string) => setTasks({
-        ...tasks,
-        [listId]: tasks[listId].filter(task => task.id !== taskId)
-    })
+    const deleteTask = (listId: string, taskId: string) => tasksDispatch(deleteTaskAC(listId, taskId))
 
     const changeFilter = (listID: string, filterValue: FilterType) => {
-        setLists(lists.map(list => list.id === listID ? {...list, filter: filterValue} : list))
+        listsDispatch(changeFilterAC(listID, filterValue))
     }
 
-    const addNewTask = (listId: string, title: string) => setTasks({
-        ...tasks,
-        [listId]: [...tasks[listId], {id: v1(), title, isDone: false}]
-    })
+    const addNewTask = (listId: string, title: string) => tasksDispatch(addNewTaskAC(listId, title))
 
-    const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => setTasks({
-        ...tasks,
-        [listId]: tasks[listId].map(task => task.id === taskId ? {...task, isDone} : task)
-    })
-
-    const deleteList = (listId: string) => setLists(lists.filter(list => list.id !== listId))
+    const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => tasksDispatch(changeTaskStatusAC(listId, taskId, isDone))
+    const deleteList = (listId: string) => listsDispatch(deleteListAC(listId))
 
     const filteredTasks = (filter: FilterType, tasks: TasksType[]) => {
         switch (filter) {
@@ -75,19 +80,13 @@ function App() {
 
     const addTodoList = (newTitle: string) => {
         const newListId = v1()
-        setLists([{id: newListId, title: newTitle, filter: "all"}, ...lists])
-        setTasks({...tasks, [newListId]: []})
+        listsDispatch(addTodoListAC(newListId, newTitle))
+        tasksDispatch(addEmptyArrayAC(newListId))
     }
 
-    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => setTasks({
-        ...tasks,
-        [todoListID]: tasks[todoListID].map(task => task.id === taskID ? {...task, title: newTitle} : task)
-    })
+    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => tasksDispatch(editTaskTitleAC(todoListID, taskID, newTitle))
 
-    const editTodoListTitle = (listID: string, newTitle: string) => setLists(lists.map(list => list.id === listID ? {
-        ...list,
-        title: newTitle
-    } : list))
+    const editTodoListTitle = (listID: string, newTitle: string) => listsDispatch(changeListTitleAC(listID, newTitle))
 
 
     //UI
@@ -102,10 +101,9 @@ function App() {
                     {
                         lists.map(list => {
                             return (
-                                <Grid item style={{padding: "20px"}}>
+                                <Grid key={list.id} item style={{padding: "20px"}}>
                                     <Paper style={{padding: "20px"}}>
                                         <TodoList
-                                            key={list.id}
                                             listId={list.id}
                                             filter={list.filter}
                                             title={list.title}

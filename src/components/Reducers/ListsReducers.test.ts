@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {ListType, ObjectTasksType} from "../../App";
-import {changeFilterAC, changeListTitleAC, deleteListAC, ListsReducers} from "./ListsReducer";
+import {addTodoListAC, changeFilterAC, changeListTitleAC, deleteListAC, ListsReducer} from "./ListsReducer";
 
 
     const listID1 = v1()
@@ -26,7 +26,7 @@ import {changeFilterAC, changeListTitleAC, deleteListAC, ListsReducers} from "./
 test("Second List should be deleted", () => {
 
     //action
-    const listsAfterDelete = ListsReducers (lists, deleteListAC(listID2))
+    const listsAfterDelete = ListsReducer (lists, deleteListAC(listID2))
 
     //expect
     expect(listsAfterDelete.length).toBe(1)
@@ -36,7 +36,7 @@ test("Second List should be deleted", () => {
 
 test("Filter of the first List should be changed to completed", ()=> {
     //action
-    const correctedLists = ListsReducers(lists, changeFilterAC(listID1, "completed"))
+    const correctedLists = ListsReducer(lists, changeFilterAC(listID1, "completed"))
     //expect
 
     expect(correctedLists[0].filter).toBe("completed")
@@ -44,8 +44,18 @@ test("Filter of the first List should be changed to completed", ()=> {
 
 test("Title of the second list should be changed", ()=> {
     //action
-    const correctedLists = ListsReducers(lists, changeListTitleAC(listID2, "What should be done"))
+    const correctedLists = ListsReducer(lists, changeListTitleAC(listID2, "What should be done"))
     //expect
 
     expect(correctedLists[1].title).toBe("What should be done")
+})
+
+test("Add a new list", ()=> {
+    //action
+    const newListId = v1()
+    const correctedLists = ListsReducer(lists, addTodoListAC(newListId, "What should be done"))
+    //expect
+
+    expect(correctedLists.length).toBe(3)
+    expect(correctedLists[0].title).toBe("What should be done")
 })

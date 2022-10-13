@@ -1,6 +1,6 @@
 import {v1} from "uuid";
 import {ObjectTasksType} from "../../App";
-import {addNewTask, changeTaskStatusAC, deleteTaskAC, editTaskTitleAC, tasksReducerTest} from "./TasksReducer";
+import {addNewTaskAC, changeTaskStatusAC, deleteTaskAC, editTaskTitleAC, tasksReducer} from "./TasksReducer";
 const listID1 = v1()
 const listID2 = v1()
 
@@ -21,7 +21,7 @@ let tasks: ObjectTasksType = {
 test("Task React should be deleted", () => {
 
     //action
-    const newTasks = tasksReducerTest(tasks, deleteTaskAC(listID1, "2"))
+    const newTasks = tasksReducer(tasks, deleteTaskAC(listID1, "2"))
 
 
     //expect
@@ -33,7 +33,7 @@ test("Task React should be deleted", () => {
 test("Add new task to first List", () => {
 
     //action
-    const newTasks = tasksReducerTest(tasks, addNewTask(listID1, "Angular"))
+    const newTasks = tasksReducer(tasks, addNewTaskAC(listID1, "Angular"))
 
 
     //expect
@@ -44,7 +44,7 @@ test("Add new task to first List", () => {
 test("change React task Status in list 1", () => {
 
     //action
-    const newTasks = tasksReducerTest(tasks, changeTaskStatusAC(listID1, "2",true))
+    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2",true))
 
 
     //expect
@@ -55,7 +55,7 @@ test("change React task Status in list 1", () => {
 test("change title of the task in the list 2", () => {
 
     //action
-    const newTasks = tasksReducerTest(tasks, editTaskTitleAC(listID2, "5","Meat"))
+    const newTasks = tasksReducer(tasks, editTaskTitleAC(listID2, "5","Meat"))
 
 
     //expect

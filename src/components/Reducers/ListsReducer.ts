@@ -1,11 +1,21 @@
 import {ListType} from "../../App";
 import {FilterType} from "../TodoList";
+import {v1} from "uuid";
 
 const DELETE_LIST = "DELETE-LIST"
 const CHANGE_FILTER = "CHANGE-FILTER"
 const CHANGE_LIST_TITLE = "CHANGE-LIST-TITLE"
+const ADD_TODOLIST = "ADD-TODOLIST"
 
-export const ListsReducers = (state: Array<ListType>, action: ActionsTpe) => {
+export const listID1 = v1()
+export const listID2 = v1()
+
+const initialState: Array<ListType> = [
+    {id: listID1, title: "What to Learn", filter: "active"},
+    {id: listID2, title: "What to buy", filter: "all"},
+]
+
+export const ListsReducer = (state: Array<ListType> = initialState, action: ActionsTpe): Array<ListType> => {
     switch (action.type) {
         case DELETE_LIST:
             return state.filter(list => list.id !== action.payload.listID)
@@ -13,14 +23,15 @@ export const ListsReducers = (state: Array<ListType>, action: ActionsTpe) => {
             return state.map(list => list.id === action.payload.listID ? {...list, filter: action.payload.filterValue} : list)
         case CHANGE_LIST_TITLE:
             return state.map(list => list.id === action.payload.listID ? {...list, title: action.payload.newTitle} : list)
-
+        case ADD_TODOLIST:
+            return [{id: action.payload.listId, title: action.payload.title, filter: "all"}, ...state]
 
         default:
             return state
     }
 }
 
-type ActionsTpe = deleteListACType | changeFilterACType | changeListTitleACType
+type ActionsTpe = deleteListACType | changeFilterACType | changeListTitleACType | addTodoListACType
 
 type deleteListACType = ReturnType<typeof deleteListAC>
 export const deleteListAC = (listID: string) => {
@@ -50,6 +61,17 @@ export const changeListTitleAC = (listID: string, newTitle: string) => {
         payload: {
             listID,
             newTitle
+        }
+    } as const
+}
+
+type addTodoListACType = ReturnType<typeof addTodoListAC>
+export const addTodoListAC = (listId: string, title: string) => {
+    return {
+        type: ADD_TODOLIST,
+        payload: {
+            listId,
+            title
         }
     } as const
 }
