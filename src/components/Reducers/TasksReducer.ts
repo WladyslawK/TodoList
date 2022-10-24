@@ -1,6 +1,6 @@
-import {ObjectTasksType} from "../../App";
+import {TasksStateType} from "../../App";
 import {v1} from "uuid";
-import {listID1, listID2} from "./ListsReducer";
+import {ADD_TODOLIST, addTodoListACType, listID1, listID2} from "./ListsReducer";
 
 const DELETE_TASK = "DELETE-TASK"
 const ADD_NEW_TASK = "ADD-NEW-TASK"
@@ -8,7 +8,7 @@ const CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS"
 const EDIT_TASK_TITLE = "EDIT_TASK_TITLE"
 const ADD_EMPTY_ARRAY = "ADD-EMPTY-ARRAY"
 
-const initialState: ObjectTasksType = {
+const initialState: TasksStateType = {
     [listID1]: [
         {id: "1", title: "HTML&CSS", isDone: true},
         {id: "2", title: "React", isDone: false},
@@ -21,7 +21,7 @@ const initialState: ObjectTasksType = {
     ]
 }
 
-export const tasksReducer = (state: ObjectTasksType = initialState, action: ActionsType): ObjectTasksType => {
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {
     switch (action.type) {
         case DELETE_TASK:
             return {
@@ -53,14 +53,22 @@ export const tasksReducer = (state: ObjectTasksType = initialState, action: Acti
                     title: action.payload.newTitle
                 } : task)
             }
-        case ADD_EMPTY_ARRAY:
-            return {...state, [action.payload.listId]: []}
+        case ADD_TODOLIST:
+            return {
+                ...state,
+                [action.payload.listId]: []
+            }
         default:
             return state
     }
 }
 
-type ActionsType = deleteTaskACType | addNewTaskACType | changeTaskStatusACType | editTaskTitleACType | addEmptyArrayACType
+type ActionsType =
+    deleteTaskACType
+    | addNewTaskACType
+    | changeTaskStatusACType
+    | editTaskTitleACType
+    | addTodoListACType
 
 type deleteTaskACType = ReturnType<typeof deleteTaskAC>
 export const deleteTaskAC = (listID: string, taskId: string) => {
@@ -105,13 +113,5 @@ export const editTaskTitleAC = (listID: string, taskId: string, newTitle: string
             taskId,
             newTitle
         }
-    } as const
-}
-
-type addEmptyArrayACType = ReturnType<typeof addEmptyArrayAC>
-export const addEmptyArrayAC = (listId: string) => {
-    return {
-        type: ADD_EMPTY_ARRAY,
-        payload: {listId}
     } as const
 }

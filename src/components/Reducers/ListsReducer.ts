@@ -5,7 +5,7 @@ import {v1} from "uuid";
 const DELETE_LIST = "DELETE-LIST"
 const CHANGE_FILTER = "CHANGE-FILTER"
 const CHANGE_LIST_TITLE = "CHANGE-LIST-TITLE"
-const ADD_TODOLIST = "ADD-TODOLIST"
+export const ADD_TODOLIST = "ADD-TODOLIST"
 
 export const listID1 = v1()
 export const listID2 = v1()
@@ -33,7 +33,7 @@ export const ListsReducer = (state: Array<ListType> = initialState, action: Acti
 
 type ActionsTpe = deleteListACType | changeFilterACType | changeListTitleACType | addTodoListACType
 
-type deleteListACType = ReturnType<typeof deleteListAC>
+export type deleteListACType = ReturnType<typeof deleteListAC>
 export const deleteListAC = (listID: string) => {
     return {
         type: DELETE_LIST,
@@ -65,12 +65,13 @@ export const changeListTitleAC = (listID: string, newTitle: string) => {
     } as const
 }
 
-type addTodoListACType = ReturnType<typeof addTodoListAC>
-export const addTodoListAC = (listId: string, title: string) => {
+export type addTodoListACType = ReturnType<typeof addTodoListAC>
+export const addTodoListAC = (title: string) => {
+
     return {
         type: ADD_TODOLIST,
         payload: {
-            listId,
+            listId: v1(),
             title
         }
     } as const

@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {ListType, ObjectTasksType} from "../../App";
+import {ListType, TasksStateType} from "../../App";
 import {addTodoListAC, changeFilterAC, changeListTitleAC, deleteListAC, ListsReducer} from "./ListsReducer";
 
 
@@ -10,7 +10,7 @@ import {addTodoListAC, changeFilterAC, changeListTitleAC, deleteListAC, ListsRed
         {id: listID2, title: "What to buy", filter: "all"},
     ]
 
-    let tasks : ObjectTasksType = {
+    let tasks : TasksStateType = {
         [listID1]: [
             {id: v1(), title: "HTML&CSS", isDone: true},
             {id: v1(), title: "JS", isDone: true},
@@ -52,8 +52,14 @@ test("Title of the second list should be changed", ()=> {
 
 test("Add a new list", ()=> {
     //action
-    const newListId = v1()
-    const correctedLists = ListsReducer(lists, addTodoListAC(newListId, "What should be done"))
+    const correctedLists = ListsReducer(lists, addTodoListAC( "What should be done"))
+
+
+    const key = Object.keys(correctedLists)
+    if(!key){
+        throw Error ("New key should be added")
+    }
+
     //expect
 
     expect(correctedLists.length).toBe(3)

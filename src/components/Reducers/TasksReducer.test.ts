@@ -1,10 +1,10 @@
 import {v1} from "uuid";
-import {ObjectTasksType} from "../../App";
+import {TasksStateType} from "../../App";
 import {addNewTaskAC, changeTaskStatusAC, deleteTaskAC, editTaskTitleAC, tasksReducer} from "./TasksReducer";
 const listID1 = v1()
 const listID2 = v1()
 
-let tasks: ObjectTasksType = {
+let tasks: TasksStateType = {
     [listID1]: [
         {id: "1", title: "HTML&CSS", isDone: true},
         {id: "2", title: "React", isDone: false},

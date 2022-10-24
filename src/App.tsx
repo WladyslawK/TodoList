@@ -13,7 +13,6 @@ import {
     ListsReducer
 } from "./components/Reducers/ListsReducer";
 import {
-    addEmptyArrayAC,
     addNewTaskAC,
     changeTaskStatusAC,
     deleteTaskAC,
@@ -27,7 +26,7 @@ export type ListType = {
     filter: FilterType
 }
 
-export type ObjectTasksType = {
+export type TasksStateType = {
     [id: string]: TasksType[]
 }
 
@@ -79,9 +78,9 @@ function App() {
     }
 
     const addTodoList = (newTitle: string) => {
-        const newListId = v1()
-        listsDispatch(addTodoListAC(newListId, newTitle))
-        tasksDispatch(addEmptyArrayAC(newListId))
+        const action = addTodoListAC(newTitle)
+        listsDispatch(action)
+        tasksDispatch(action)
     }
 
     const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => tasksDispatch(editTaskTitleAC(todoListID, taskID, newTitle))
@@ -107,7 +106,7 @@ function App() {
                                             listId={list.id}
                                             filter={list.filter}
                                             title={list.title}
-                                            tasks={filteredTasks(list.filter, tasks[list.id])}
+                                            tasks={filteredTasks(list.filter, tasks[list.id] ? tasks[list.id] : [])}
                                             deleteTask={deleteTask}
                                             addTask={addNewTask}
                                             changeFilter={changeFilter}
