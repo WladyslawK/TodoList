@@ -15,7 +15,7 @@ const initialState: Array<ListType> = [
     {id: listID2, title: "What to buy", filter: "all"},
 ]
 
-export const ListsReducer = (state: Array<ListType> = initialState, action: ActionsTpe): Array<ListType> => {
+export const listsReducer = (state: Array<ListType> = initialState, action: ActionsTpe): Array<ListType> => {
     switch (action.type) {
         case DELETE_LIST:
             return state.filter(list => list.id !== action.payload.listID)

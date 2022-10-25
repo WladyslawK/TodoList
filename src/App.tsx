@@ -9,8 +9,7 @@ import {
     addTodoListAC,
     changeFilterAC,
     changeListTitleAC,
-    deleteListAC,
-    ListsReducer
+    deleteListAC, listsReducer
 } from "./components/Reducers/ListsReducer";
 import {
     addNewTaskAC,
@@ -19,6 +18,8 @@ import {
     editTaskTitleAC,
     tasksReducer
 } from "./components/Reducers/TasksReducer";
+import {useDispatch, useSelector} from "react-redux";
+import {rootReducerType} from "./redux/store";
 
 export type ListType = {
     id: string
@@ -33,37 +34,21 @@ export type TasksStateType = {
 function App() {
 
     //BLL
-    const listID1 = v1()
-    const listID2 = v1()
 
-    const [lists, listsDispatch] = useReducer(ListsReducer,[
-        {id: listID1, title: "What to Learn", filter: "active"},
-        {id: listID2, title: "What to buy", filter: "all"},
-    ])
+    const lists = useSelector<rootReducerType, Array<ListType>>(state => state.listsReducer)
+    const tasks = useSelector<rootReducerType, TasksStateType>(state => state.tasksReducer)
+    const Dispatch = useDispatch()
 
-    let [tasks, tasksDispatch] = useReducer(tasksReducer, {
-        [listID1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "React", isDone: false},
-        ],
-        [listID2]: [
-            {id: v1(), title: "Milk", isDone: false},
-            {id: v1(), title: "Bread", isDone: true},
-            {id: v1(), title: "Meat", isDone: true},
-        ]
-    })
-
-    const deleteTask = (listId: string, taskId: string) => tasksDispatch(deleteTaskAC(listId, taskId))
+    const deleteTask = (listId: string, taskId: string) => Dispatch(deleteTaskAC(listId, taskId))
 
     const changeFilter = (listID: string, filterValue: FilterType) => {
-        listsDispatch(changeFilterAC(listID, filterValue))
+        Dispatch(changeFilterAC(listID, filterValue))
     }
 
-    const addNewTask = (listId: string, title: string) => tasksDispatch(addNewTaskAC(listId, title))
+    const addNewTask = (listId: string, title: string) => Dispatch(addNewTaskAC(listId, title))
 
-    const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => tasksDispatch(changeTaskStatusAC(listId, taskId, isDone))
-    const deleteList = (listId: string) => listsDispatch(deleteListAC(listId))
+    const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => Dispatch(changeTaskStatusAC(listId, taskId, isDone))
+    const deleteList = (listId: string) => Dispatch(deleteListAC(listId))
 
     const filteredTasks = (filter: FilterType, tasks: TasksType[]) => {
         switch (filter) {
@@ -79,13 +64,13 @@ function App() {
 
     const addTodoList = (newTitle: string) => {
         const action = addTodoListAC(newTitle)
-        listsDispatch(action)
-        tasksDispatch(action)
+        Dispatch(action)
+        Dispatch(action)
     }
 
-    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => tasksDispatch(editTaskTitleAC(todoListID, taskID, newTitle))
+    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle))
 
-    const editTodoListTitle = (listID: string, newTitle: string) => listsDispatch(changeListTitleAC(listID, newTitle))
+    const editTodoListTitle = (listID: string, newTitle: string) => Dispatch(changeListTitleAC(listID, newTitle))
 
 
     //UI
