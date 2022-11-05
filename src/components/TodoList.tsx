@@ -1,9 +1,10 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import style from "./TodoList.module.css"
-import {Input} from "./Input";
+import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {Task} from "./Task";
 
 export type TasksType = {
     id: string,
@@ -28,7 +29,7 @@ type todoListPropsType = {
 }
 
 
-export const TodoList: React.FC<todoListPropsType> = ({
+export const TodoList: React.FC<todoListPropsType> = React.memo(({
                                                           listId,
                                                           title,
                                                           tasks,
@@ -39,21 +40,23 @@ export const TodoList: React.FC<todoListPropsType> = ({
                                                           filter,
                                                           deleteList, editTaskTitle, editTodoListTitle
                                                       }) => {
-
+    console.log("TodoList called")
     const changeFilterHandler = (filter: FilterType) => changeFilter(listId, filter)
 
-    const addTaskHandler = (newTitle: string) => {
+    const addTaskHandler = useCallback((newTitle: string) => {
         addTask(listId, newTitle)
-    }
+    },[])
 
     const changeTodoListTitle = (newTitle: string) => {
         editTodoListTitle(listId, newTitle)
     }
 
-    const changeTaskStatusHandler = (taskId: string, event: ChangeEvent<HTMLInputElement>) => changeStatus(listId, taskId, event.currentTarget.checked)
+    const changeTaskStatusCallback = (taskId: string, newStatusValue: boolean) => changeStatus(listId, taskId, newStatusValue)
+
+    const deleteTaskCallback = (taskId: string) => deleteTask(listId, taskId)
 
     /*give two attributes one is given from map itself and one after in Span*/
-    const changeTitleHandler = (tasId: string, newTitle: string) => editTaskTitle(listId, tasId, newTitle)
+    const changeTaskTitleCallback = (taskId: string, newTitle: string) => editTaskTitle(listId, taskId, newTitle)
 
     const btn = {
         minWidth: "60px",
@@ -73,35 +76,21 @@ export const TodoList: React.FC<todoListPropsType> = ({
         marginLeft: "5px",
     }
 
-    const TasksElements = tasks && tasks.map(task => {
+    let filteredTasks = tasks
 
-            /*const changeTitleHandler = (newTitle: string) => editTaskTitle(listId, task.id, newTitle)*/
+    if(filter === "active"){
+        filteredTasks = tasks.filter(task => task.isDone === false)
+    }
+    if(filter === "completed"){
+        filteredTasks = tasks.filter(task => task.isDone === true)
+    }
 
-                return (
-                <li key={task.id}>
-
-                    <Checkbox
-                        checked={task.isDone}
-                        onChange={(e) => changeTaskStatusHandler(task.id, e)}
-                        inputProps={{ 'aria-label': 'controlled' }}
-                    />
-
-                    <EditableSpan
-                        title={task.title}
-                        isDone={task.isDone}
-                        callback={(newTitle) => changeTitleHandler(task.id, newTitle)}
-                    />
-
-                    <IconButton
-                        aria-label="delete"
-                        onClick={() => deleteTask(listId, task.id)}
-                        size="large">
-                        <Delete />
-                    </IconButton>
-
-                </li>)
-        }
-    )
+    const TasksElements = filteredTasks && filteredTasks.map(task => <li key={task.id}><Task
+        task={task}
+        changeStatus={(newStatusValue)=> changeTaskStatusCallback(task.id, newStatusValue)}
+        deleteTask={()=> deleteTaskCallback(task.id)}
+        editTaskTitle={(newTitle: string) => changeTaskTitleCallback(task.id, newTitle)}
+    /></li>)
 
 
 
@@ -115,7 +104,7 @@ export const TodoList: React.FC<todoListPropsType> = ({
                     onClick={() => deleteList(listId)}>x</Button>
             </h3>
             <div>
-                <Input callback={addTaskHandler}/>
+                <AddItemForm callback={addTaskHandler}/>
             </div>
             <ul className={style.tasksList}>
 
@@ -136,4 +125,4 @@ export const TodoList: React.FC<todoListPropsType> = ({
             </div>
         </div>
     );
-};
+})

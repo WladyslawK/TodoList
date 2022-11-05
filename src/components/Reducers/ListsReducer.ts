@@ -11,8 +11,8 @@ export const listID1 = v1()
 export const listID2 = v1()
 
 const initialState: Array<ListType> = [
-    {id: listID1, title: "What to Learn", filter: "active"},
-    {id: listID2, title: "What to buy", filter: "all"},
+    /*{id: listID1, title: "What to Learn", filter: "active"},
+    {id: listID2, title: "What to buy", filter: "all"},*/
 ]
 
 export const listsReducer = (state: Array<ListType> = initialState, action: ActionsTpe): Array<ListType> => {

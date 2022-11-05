@@ -9,7 +9,7 @@ const EDIT_TASK_TITLE = "EDIT_TASK_TITLE"
 const ADD_EMPTY_ARRAY = "ADD-EMPTY-ARRAY"
 
 const initialState: TasksStateType = {
-    [listID1]: [
+  /*  [listID1]: [
         {id: "1", title: "HTML&CSS", isDone: true},
         {id: "2", title: "React", isDone: false},
         {id: "3", title: "JS", isDone: true},
@@ -18,7 +18,7 @@ const initialState: TasksStateType = {
         {id: "4", title: "Milk", isDone: false},
         {id: "5", title: "Bread", isDone: true},
         {id: "6", title: "Meat", isDone: true},
-    ]
+    ]*/
 }
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionsType): TasksStateType => {

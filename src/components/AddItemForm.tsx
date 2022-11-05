@@ -2,12 +2,12 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import style from "./TodoList.module.css"
 import {Button, TextField} from "@mui/material";
 
-type InputType = {
+type AddItemFormType = {
     callback: (newTitle: string) => void
 }
 
-export const Input: React.FC<InputType> = ({callback}) => {
-
+export const AddItemForm: React.FC<AddItemFormType> = React.memo(({callback}) => {
+    console.log("AddItemForm called")
     const [taskTextInput, SetTaskTextInput] = useState<string>("")
     const [error, SetError] = useState<boolean>(false)
 
@@ -63,4 +63,4 @@ export const Input: React.FC<InputType> = ({callback}) => {
             </div>
         </>
     );
-};
+})

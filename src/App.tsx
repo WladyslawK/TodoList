@@ -1,8 +1,8 @@
-import React, {useReducer, useState} from 'react';
+import React, {useCallback, useMemo, useReducer, useState} from 'react';
 import './App.css';
 import {FilterType, TasksType, TodoList} from "./components/TodoList";
 import {v1} from "uuid";
-import {Input} from "./components/Input";
+import {AddItemForm} from "./components/AddItemForm";
 import {ButtonAppBar} from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 import {
@@ -39,18 +39,18 @@ function App() {
     const tasks = useSelector<rootReducerType, TasksStateType>(state => state.tasksReducer)
     const Dispatch = useDispatch()
 
-    const deleteTask = (listId: string, taskId: string) => Dispatch(deleteTaskAC(listId, taskId))
+    const deleteTask = useCallback((listId: string, taskId: string) => Dispatch(deleteTaskAC(listId, taskId)),[])
 
-    const changeFilter = (listID: string, filterValue: FilterType) => {
+    const changeFilter = useCallback((listID: string, filterValue: FilterType) => {
         Dispatch(changeFilterAC(listID, filterValue))
-    }
+    },[])
 
-    const addNewTask = (listId: string, title: string) => Dispatch(addNewTaskAC(listId, title))
+    const addNewTask = useCallback((listId: string, title: string) => Dispatch(addNewTaskAC(listId, title)),[])
 
-    const changeTaskStatus = (listId: string, taskId: string, isDone: boolean) => Dispatch(changeTaskStatusAC(listId, taskId, isDone))
-    const deleteList = (listId: string) => Dispatch(deleteListAC(listId))
+    const changeTaskStatus = useCallback((listId: string, taskId: string, isDone: boolean) => Dispatch(changeTaskStatusAC(listId, taskId, isDone)),[])
+    const deleteList = useCallback((listId: string) => Dispatch(deleteListAC(listId)),[])
 
-    const filteredTasks = (filter: FilterType, tasks: TasksType[]) => {
+    const filteredTasks = (filter: FilterType, tasks: TasksType[]):Array<TasksType> => {
         switch (filter) {
             case "completed":
                 return tasks.filter(task => task.isDone)
@@ -62,15 +62,14 @@ function App() {
         }
     }
 
-    const addTodoList = (newTitle: string) => {
+    const addTodoList = useCallback( (newTitle: string) => {
         const action = addTodoListAC(newTitle)
         Dispatch(action)
-        Dispatch(action)
-    }
+    },[])
 
-    const editTaskTitle = (todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle))
+    const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle)),[])
 
-    const editTodoListTitle = (listID: string, newTitle: string) => Dispatch(changeListTitleAC(listID, newTitle))
+    const editTodoListTitle = useCallback((listID: string, newTitle: string) => Dispatch(changeListTitleAC(listID, newTitle)),[])
 
 
     //UI
@@ -79,7 +78,7 @@ function App() {
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding: "20px"}}>
-                    <Input callback={addTodoList}/>
+                    <AddItemForm callback={addTodoList}/>
                 </Grid>
                 <Grid container spacing={3}>
                     {
@@ -91,7 +90,7 @@ function App() {
                                             listId={list.id}
                                             filter={list.filter}
                                             title={list.title}
-                                            tasks={filteredTasks(list.filter, tasks[list.id] ? tasks[list.id] : [])}
+                                            tasks={tasks[list.id]}
                                             deleteTask={deleteTask}
                                             addTask={addNewTask}
                                             changeFilter={changeFilter}
