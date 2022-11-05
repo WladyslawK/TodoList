@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, useCallback} from 'react';
 import {Checkbox, IconButton} from "@mui/material";
 import {EditableSpan} from "./EditableSpan";
 import {Delete} from "@mui/icons-material";
@@ -6,19 +6,20 @@ import {TasksType} from "./TodoList";
 
 type TaskTypeFC = {
     task: TasksType
-    changeStatus: (newStatusValue: boolean) => void
-    deleteTask: () => void
-    editTaskTitle: (newTitle: string) => void
+    changeStatus: (taskId: string, newStatusValue: boolean) => void
+    deleteTask: (taskId: string) => void
+    editTaskTitle: (taskId: string, newTitle: string) => void
 
 }
 
-export const Task: React.FC<TaskTypeFC> = ({task, deleteTask, editTaskTitle, changeStatus}) => {
+export const Task: React.FC<TaskTypeFC> = React.memo(({task, deleteTask, editTaskTitle, changeStatus}) => {
+    console.log("Task rendered")
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeStatus(e.currentTarget.checked)
+        changeStatus(task.id, e.currentTarget.checked)
     }
 
-
+    const changeTaskTitleCallback = useCallback((newTitle: string) => editTaskTitle(task.id, newTitle), [editTaskTitle])
     return (
         <div>
             <Checkbox
@@ -30,15 +31,15 @@ export const Task: React.FC<TaskTypeFC> = ({task, deleteTask, editTaskTitle, cha
             <EditableSpan
                 title={task.title}
                 isDone={task.isDone}
-                callback={editTaskTitle}
+                callback={changeTaskTitleCallback}
             />
 
             <IconButton
                 aria-label="delete"
-                onClick={deleteTask}
+                onClick={() => deleteTask(task.id)}
                 size="large">
                 <Delete />
             </IconButton>
         </div>
     );
-};
+})

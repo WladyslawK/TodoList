@@ -51,12 +51,12 @@ export const TodoList: React.FC<todoListPropsType> = React.memo(({
         editTodoListTitle(listId, newTitle)
     }
 
-    const changeTaskStatusCallback = (taskId: string, newStatusValue: boolean) => changeStatus(listId, taskId, newStatusValue)
+    const changeTaskStatusCallback = useCallback((taskId: string, newStatusValue: boolean) => changeStatus(listId, taskId, newStatusValue),[changeStatus])
 
-    const deleteTaskCallback = (taskId: string) => deleteTask(listId, taskId)
+    const deleteTaskCallback = useCallback((taskId: string) => deleteTask(listId, taskId),[deleteTask])
 
     /*give two attributes one is given from map itself and one after in Span*/
-    const changeTaskTitleCallback = (taskId: string, newTitle: string) => editTaskTitle(listId, taskId, newTitle)
+    const changeTaskTitleCallback = useCallback((taskId: string, newTitle: string) => editTaskTitle(listId, taskId, newTitle),[editTaskTitle])
 
     const btn = {
         minWidth: "60px",
@@ -87,9 +87,9 @@ export const TodoList: React.FC<todoListPropsType> = React.memo(({
 
     const TasksElements = filteredTasks && filteredTasks.map(task => <li key={task.id}><Task
         task={task}
-        changeStatus={(newStatusValue)=> changeTaskStatusCallback(task.id, newStatusValue)}
-        deleteTask={()=> deleteTaskCallback(task.id)}
-        editTaskTitle={(newTitle: string) => changeTaskTitleCallback(task.id, newTitle)}
+        changeStatus={changeTaskStatusCallback}
+        deleteTask={deleteTaskCallback}
+        editTaskTitle={changeTaskTitleCallback}
     /></li>)
 
 
