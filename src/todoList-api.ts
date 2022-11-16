@@ -15,28 +15,7 @@ type TodoListType = {
     order: number
 }
 
-type DeleteResponseType = {
-    data: {}
-    fieldsErrors: Array<string>
-    messages: Array<string>
-    resultCode: number
-}
-
-type CreateTodoListType = {
-    data: {item : TodoListType}
-    fieldsErrors: Array<string>
-    messages: Array<string>
-    resultCode: number
-}
-
-type UpdateTodoList = {
-    data: {}
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-}
-
-type ResponseType<D> = {
+export type ResponseType<D = {}> = {
     data: D
     fieldsErrors: string[]
     messages: string[]
@@ -59,4 +38,50 @@ export const todoListAPI = {
     changeToDoListTitle(listID: string, title: string){
         return instance.put<ResponseType<{}>>(`todo-lists/${listID}`, {title})
     }
+}
+
+export type TaskType = {
+    addedDate: string
+    deadline: string
+    description: string
+    id: string
+    order: number
+    priority: number
+    startDate: string
+    status: number
+    title: string
+    todoListId: string
+}
+
+type GetTasksResponseType<T = {}> = {
+    error: string
+    items: Array<T>
+    totalCount: number
+}
+
+type ResponseTaskType<T = {}> = {
+    data: {item: T}
+    fieldsErrors: string[]
+    messages:string[]
+    resultCode: number
+}
+
+export const tasksAPI = {
+
+    getTasks(todolistId: string){
+        return instance.get<GetTasksResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`)
+    },
+
+    createTask(todolistId: string, title: string){
+        return instance.post<ResponseTaskType<TaskType>>(`todo-lists/${todolistId}/tasks`, {title})
+    },
+
+    deleteTask(todolistId: string, taskId: string){
+        return instance.delete<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+
+    changeTaskTitle(todolistId: string, taskId: string, title: string) {
+        return instance.put<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    }
+
 }

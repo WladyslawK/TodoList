@@ -4,7 +4,7 @@ import {TodoList} from "../components/TodoList";
 import {todoListAPI} from "../todoList-api";
 
 export default {
-    title: 'API'
+    title: 'API/TodoList API'
 }
 
 
