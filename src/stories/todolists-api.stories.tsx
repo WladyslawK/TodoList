@@ -32,7 +32,7 @@ export const CreateTodolist = () => {
     useEffect(() => {
         const date = new Date()
 
-        todoListAPI.createToDoList(`New ToDoList ${date.getMinutes()}` )
+        todoListAPI.createToDoList(`New ToDoList ${date.getMinutes()}`)
             .then(res => {
                 setState(res)
             })
@@ -44,7 +44,7 @@ export const CreateTodolist = () => {
 export const DeleteTodolist = () => {
 
     const [state, setState] = useState<any>(null)
-    const toDoListID = "24f2aa2b-5d4f-4f7d-a6fa-6f8c7c353f6f"
+    const toDoListID = "3384f19e-1114-4e9c-9109-e61e25cb73b0"
 
     useEffect(() => {
         todoListAPI.deleteToDoList(toDoListID).then(res => {
