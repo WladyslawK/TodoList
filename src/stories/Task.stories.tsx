@@ -13,12 +13,12 @@ const taskTitleCallback = action("Task Title changed")
 export const TaskBaseExample = () => {
     return (
         <>
-            <Task task={{id: "1", title: "React", isDone: false}}
+            <Task task={{id: "1", title: "React", status: 1, addedDate: "", deadline: "", description: "", order: 1, priority: 2, startDate: "", todoListId: "2"}}
                   changeStatus={changeStatusCallback}
                   deleteTask={deleteTaskCallback}
                   editTaskTitle={taskTitleCallback}/>
 
-            <Task task={{id: "1", title: "JS", isDone: true}}
+            <Task task={{id: "1", title: "JS", status: 1, addedDate: "", deadline: "", description: "", order: 1, priority: 2, startDate: "", todoListId: "3"}}
                   changeStatus={changeStatusCallback}
                   deleteTask={deleteTaskCallback}
                   editTaskTitle={taskTitleCallback}/>

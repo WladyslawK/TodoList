@@ -5,20 +5,14 @@ import {EditableSpan} from "./EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
 import {Task} from "./Task";
-
-export type TasksType = {
-    id: string,
-    title: string,
-    isDone: boolean,
-}
-
-export type FilterType = "all" | "completed" | "active"
+import {TaskStatuses, TaskType} from "../todoList-api";
+import {FilterType} from "./Reducers/TodoListsReducer";
 
 type todoListPropsType = {
     listId: string
     filter: FilterType
     title: string,
-    tasks: Array<TasksType>,
+    tasks: Array<TaskType>,
     deleteTask: (listId: string, taskId: string) => void
     addTask: (listId: string, newTaskTitle: string) => void
     changeFilter: (listId: string, filterValue: FilterType) => void
@@ -79,10 +73,10 @@ export const TodoList: React.FC<todoListPropsType> = React.memo(({
     let filteredTasks = tasks
 
     if(filter === "active"){
-        filteredTasks = tasks.filter(task => task.isDone === false)
+        filteredTasks = tasks.filter(task => task.status === TaskStatuses.New)
     }
     if(filter === "completed"){
-        filteredTasks = tasks.filter(task => task.isDone === true)
+        filteredTasks = tasks.filter(task => task.status === TaskStatuses.Completed)
     }
 
     const TasksElements = filteredTasks && filteredTasks.map(task => <li key={task.id}><Task

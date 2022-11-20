@@ -1,12 +1,16 @@
-import {TasksStateType} from "../../App";
-import {v1} from "uuid";
-import {ADD_TODOLIST, addTodoListACType, listID1, listID2} from "./ListsReducer";
-
+import {ADD_TODOLIST, addTodoListACType} from "./TodoListsReducer";
+import {TaskType} from "../../todoList-api";
 const DELETE_TASK = "DELETE-TASK"
 const ADD_NEW_TASK = "ADD-NEW-TASK"
 const CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS"
 const EDIT_TASK_TITLE = "EDIT_TASK_TITLE"
-const ADD_EMPTY_ARRAY = "ADD-EMPTY-ARRAY"
+
+
+export type TasksStateType = {
+    [id: string]: TaskType[]
+}
+
+
 
 const initialState: TasksStateType = {
   /*  [listID1]: [
@@ -26,21 +30,20 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case DELETE_TASK:
             return {
                 ...state,
-                [action.payload.listID]: state[action.payload.listID].filter(task => task.id !== action.payload.taskId)
+                [action.payload.todoListId]: state[action.payload.todoListId].filter(task => task.id !== action.payload.taskId)
             }
-        case ADD_NEW_TASK:
+       /* case ADD_NEW_TASK:
             return {
                 ...state,
                 [action.payload.listID]: [{
                     id: v1(),
-                    title: action.payload.title,
-                    isDone: false
+                    title: action.payload.title
                 }, ...state[action.payload.listID]]
-            }
+            }*/
         case CHANGE_TASK_STATUS:
             return {
                 ...state,
-                [action.payload.listID]: state[action.payload.listID].map(task => task.id === action.payload.taskId ? {
+                [action.payload.todoListId]: state[action.payload.todoListId].map(task => task.id === action.payload.taskId ? {
                     ...task,
                     isDone: action.payload.newValue
                 } : task)
@@ -48,7 +51,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case EDIT_TASK_TITLE:
             return {
                 ...state,
-                [action.payload.listID]: state[action.payload.listID].map(task => task.id === action.payload.taskId ? {
+                [action.payload.todoListId]: state[action.payload.todoListId].map(task => task.id === action.payload.taskId ? {
                     ...task,
                     title: action.payload.newTitle
                 } : task)
@@ -71,33 +74,33 @@ type ActionsType =
     | addTodoListACType
 
 type deleteTaskACType = ReturnType<typeof deleteTaskAC>
-export const deleteTaskAC = (listID: string, taskId: string) => {
+export const deleteTaskAC = (todoListId: string, taskId: string) => {
     return {
         type: DELETE_TASK,
         payload: {
-            listID,
+            todoListId,
             taskId
         }
     } as const
 }
 
 type addNewTaskACType = ReturnType<typeof addNewTaskAC>
-export const addNewTaskAC = (listID: string, title: string) => {
+export const addNewTaskAC = (todoListId: string, title: string) => {
     return {
         type: ADD_NEW_TASK,
         payload: {
-            listID,
+            todoListId,
             title
         }
     } as const
 }
 
 type changeTaskStatusACType = ReturnType<typeof changeTaskStatusAC>
-export const changeTaskStatusAC = (listID: string, taskId: string, newValue: boolean) => {
+export const changeTaskStatusAC = (todoListId: string, taskId: string, newValue: boolean) => {
     return {
         type: CHANGE_TASK_STATUS,
         payload: {
-            listID,
+            todoListId,
             taskId,
             newValue
         }
@@ -105,11 +108,11 @@ export const changeTaskStatusAC = (listID: string, taskId: string, newValue: boo
 }
 
 type editTaskTitleACType = ReturnType<typeof editTaskTitleAC>
-export const editTaskTitleAC = (listID: string, taskId: string, newTitle: string) => {
+export const editTaskTitleAC = (todoListId: string, taskId: string, newTitle: string) => {
     return {
         type: EDIT_TASK_TITLE,
         payload: {
-            listID,
+            todoListId,
             taskId,
             newTitle
         }

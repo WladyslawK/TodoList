@@ -11,7 +11,7 @@ export const GetTasks = () => {
 
     const [state, setState] = useState<TaskType[] | null>(null)
     const [todoListId, setTodoListId] = useState<string>("")
-
+    const [count, setCount] = useState(0)
 
     /*  useEffect(() => {
           tasksAPI.getTasks(todolistId)
@@ -33,6 +33,9 @@ export const GetTasks = () => {
                 }
             })
     }
+
+
+    const onClickHandler = () => setCount(state => state + 1)
 
     return (
         <div>
@@ -57,6 +60,8 @@ export const GetTasks = () => {
                     })
                 }
             </ul>
+
+            <span onClick={onClickHandler}>{count}</span>
         </div>
     )
 }

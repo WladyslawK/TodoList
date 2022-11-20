@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo, useReducer, useState} from 'react';
 import './App.css';
-import {FilterType, TasksType, TodoList} from "./components/TodoList";
-import {v1} from "uuid";
+import {TodoList} from "./components/TodoList";
 import {AddItemForm} from "./components/AddItemForm";
 import {ButtonAppBar} from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
@@ -9,33 +8,26 @@ import {
     addTodoListAC,
     changeFilterAC,
     changeListTitleAC,
-    deleteListAC, listsReducer
-} from "./components/Reducers/ListsReducer";
+    deleteListAC, FilterType, TodoListsDomainType, todoListsReducer
+} from "./components/Reducers/TodoListsReducer";
 import {
     addNewTaskAC,
     changeTaskStatusAC,
     deleteTaskAC,
     editTaskTitleAC,
-    tasksReducer
+    tasksReducer, TasksStateType
 } from "./components/Reducers/TasksReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {rootReducerType} from "./redux/store";
+import {TaskType} from "./todoList-api";
 
-export type ListType = {
-    id: string
-    title: string
-    filter: FilterType
-}
 
-export type TasksStateType = {
-    [id: string]: TasksType[]
-}
 
 function App() {
 
     //BLL
 
-    const lists = useSelector<rootReducerType, Array<ListType>>(state => state.listsReducer)
+    const lists = useSelector<rootReducerType, Array<TodoListsDomainType>>(state => state.listsReducer)
     const tasks = useSelector<rootReducerType, TasksStateType>(state => state.tasksReducer)
     const Dispatch = useDispatch()
 
@@ -50,17 +42,17 @@ function App() {
     const changeTaskStatus = useCallback((listId: string, taskId: string, isDone: boolean) => Dispatch(changeTaskStatusAC(listId, taskId, isDone)),[])
     const deleteList = useCallback((listId: string) => Dispatch(deleteListAC(listId)),[])
 
-    const filteredTasks = (filter: FilterType, tasks: TasksType[]):Array<TasksType> => {
+    /*const filteredTasks = (filter: FilterType, tasks: TaskType[]):Array<TaskType> => {
         switch (filter) {
             case "completed":
-                return tasks.filter(task => task.isDone)
+                return tasks.filter(task => task.status === )
             case "active":
                 return tasks.filter(task => !task.isDone)
             default:
                 return tasks
 
         }
-    }
+    }*/
 
     const addTodoList = useCallback( (newTitle: string) => {
         const action = addTodoListAC(newTitle)

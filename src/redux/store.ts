@@ -1,9 +1,9 @@
 import {combineReducers, legacy_createStore} from "redux";
-import {listsReducer} from "../components/Reducers/ListsReducer";
+import {todoListsReducer} from "../components/Reducers/TodoListsReducer";
 import {tasksReducer} from "../components/Reducers/TasksReducer";
 
 export const rootReducer = combineReducers({
-    listsReducer,
+    listsReducer: todoListsReducer,
     tasksReducer
 })
 
