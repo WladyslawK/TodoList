@@ -6,7 +6,7 @@ import {TaskStatuses, TaskType} from "../todoList-api";
 
 type TaskTypeFC = {
     task: TaskType
-    changeStatus: (taskId: string, newStatusValue: boolean) => void
+    changeStatus: (task: TaskType, newStatusValue: TaskStatuses) => void
     deleteTask: (taskId: string) => void
     editTaskTitle: (taskId: string, newTitle: string) => void
 
@@ -16,7 +16,7 @@ export const Task: React.FC<TaskTypeFC> = React.memo(({task, deleteTask, editTas
     console.log("Task rendered")
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeStatus(task.id, e.currentTarget.checked)
+        changeStatus(task, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
     }
 
     const changeTaskTitleCallback = useCallback((newTitle: string) => editTaskTitle(task.id, newTitle), [editTaskTitle])

@@ -40,8 +40,6 @@ export const todoListAPI = {
     }
 }
 
-
-
 type GetTasksResponseType<T = {}> = {
     error: string
     items: Array<T>
@@ -100,6 +98,10 @@ export const tasksAPI = {
 
     changeTaskTitle(todolistId: string, taskId: string, title: string) {
         return instance.put<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    },
+
+    updateTask(todoListId: string, taskId: string, model: {}){
+        return instance.put<ResponseTaskType<TaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
     }
 
 }

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useCallback} from 'react';
+import React, {ChangeEvent, useCallback, useEffect} from 'react';
 import style from "./TodoList.module.css"
 import {AddItemForm} from "./AddItemForm";
 import {EditableSpan} from "./EditableSpan";
@@ -7,6 +7,8 @@ import {Delete} from "@mui/icons-material";
 import {Task} from "./Task";
 import {TaskStatuses, TaskType} from "../todoList-api";
 import {FilterType} from "./Reducers/TodoListsReducer";
+import {useAppDispatch} from "../redux/store";
+import {getTasksTC} from "./Reducers/TasksReducer";
 
 type todoListPropsType = {
     listId: string
@@ -16,7 +18,7 @@ type todoListPropsType = {
     deleteTask: (listId: string, taskId: string) => void
     addTask: (listId: string, newTaskTitle: string) => void
     changeFilter: (listId: string, filterValue: FilterType) => void
-    changeStatus: (listId: string, taskId: string, isDone: boolean) => void
+    changeStatus: (listId: string, task: TaskType, status: TaskStatuses) => void
     deleteList: (listId: string) => void
     editTaskTitle: (todoListID: string, taskID: string, newTitle: string) => void
     editTodoListTitle: (todoListID: string, newTitle: string) => void
@@ -35,6 +37,13 @@ export const TodoList: React.FC<todoListPropsType> = React.memo(({
                                                           deleteList, editTaskTitle, editTodoListTitle
                                                       }) => {
     console.log("TodoList called")
+
+    useEffect(() => {
+        Dispatch(getTasksTC(listId))
+    }, [])
+
+    const Dispatch = useAppDispatch()
+
     const changeFilterHandler = (filter: FilterType) => changeFilter(listId, filter)
 
     const addTaskHandler = useCallback((newTitle: string) => {
@@ -45,7 +54,7 @@ export const TodoList: React.FC<todoListPropsType> = React.memo(({
         editTodoListTitle(listId, newTitle)
     }
 
-    const changeTaskStatusCallback = useCallback((taskId: string, newStatusValue: boolean) => changeStatus(listId, taskId, newStatusValue),[changeStatus])
+    const changeTaskStatusCallback = useCallback((task: TaskType, newStatusValue: TaskStatuses) => changeStatus(listId, task, newStatusValue),[changeStatus])
 
     const deleteTaskCallback = useCallback((taskId: string) => deleteTask(listId, taskId),[deleteTask])
 

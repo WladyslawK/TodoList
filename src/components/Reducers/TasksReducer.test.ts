@@ -7,7 +7,7 @@ import {
     tasksReducer,
     TasksStateType
 } from "./TasksReducer";
-import {TaskStatuses} from "../../todoList-api";
+import {TaskPriorities, TaskStatuses} from "../../todoList-api";
 const listID1 = v1()
 const listID2 = v1()
 
@@ -40,7 +40,20 @@ test("Task React should be deleted", () => {
 test("Add new task to first TodoList", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, addNewTaskAC(listID1, "Angular"))
+    const newTask = {
+        addedDate: "",
+        deadline: "",
+        description: "",
+        id: "2",
+        order: 2,
+        priority: 2,
+        startDate: "",
+        status: 1,
+        title: "Angular",
+        todoListId: ""
+    }
+
+    const newTasks = tasksReducer(tasks, addNewTaskAC(listID1, newTask))
 
 
     //expect
