@@ -59,8 +59,7 @@ test("Title of the second TodoList should be changed", ()=> {
 
 test("Add a new list", ()=> {
     //action
-    const correctedLists = todoListsReducer(lists, addTodoListAC( "What should be done"))
-
+    const correctedLists = todoListsReducer(lists, addTodoListAC( {id: "33", title: "New Todolist", addedDate: "string", order: 2}))
 
     const key = Object.keys(correctedLists)
     if(!key){

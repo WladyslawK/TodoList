@@ -5,16 +5,13 @@ import {AddItemForm} from "./components/AddItemForm";
 import {ButtonAppBar} from "./components/ButtonAppBar";
 import {Container, Grid, Paper} from "@mui/material";
 import {
-    addTodoListAC,
+    addTodoListAC, addTodolistTC,
     changeFilterAC,
-    changeListTitleAC,
-    deleteListAC, FilterType, getTodoListsTC, TodoListsDomainType
+    changeListTitleAC, changeTodolistTitleTC,
+    deleteTodolistTC, FilterType, getTodoListsTC, TodoListsDomainType
 } from "./components/Reducers/TodoListsReducer";
 import {
-    addNewTaskAC, addTaskTC,
-    changeTaskStatusAC,
-    deleteTaskAC, deleteTaskTC,
-    editTaskTitleAC, TasksStateType, updateTaskTC
+    addTaskTC, deleteTaskTC, editTaskTitleAC, TasksStateType, updateTaskTC
 } from "./components/Reducers/TasksReducer";
 import {useSelector} from "react-redux";
 import {rootReducerType, useAppDispatch} from "./redux/store";
@@ -37,33 +34,22 @@ function App() {
 
     const changeFilter = useCallback((listID: string, filterValue: FilterType) => {
         Dispatch(changeFilterAC(listID, filterValue))
-    },[])
+    }, [])
 
-    const addNewTask = useCallback((todoListId: string, title: string) => Dispatch(addTaskTC(todoListId, title)),[])
+    const addNewTask = useCallback((todoListId: string, title: string) => Dispatch(addTaskTC(todoListId, title)), [])
 
-    const changeTaskStatus = useCallback((todoListId: string, task: TaskType, status: TaskStatuses) => Dispatch(updateTaskTC(todoListId, task, status)),[])
-    const deleteList = useCallback((listId: string) => Dispatch(deleteListAC(listId)),[])
+    const changeTaskStatus = useCallback((todoListId: string, task: TaskType, status: TaskStatuses) => Dispatch(updateTaskTC(todoListId, task, status)), [])
+    const deleteList = useCallback((listId: string) => Dispatch(deleteTodolistTC(listId)), [])
 
-    /*const filteredTasks = (filter: FilterType, tasks: TaskType[]):Array<TaskType> => {
-        switch (filter) {
-            case "completed":
-                return tasks.filter(task => task.status === )
-            case "active":
-                return tasks.filter(task => !task.isDone)
-            default:
-                return tasks
-
-        }
-    }*/
-
-    const addTodoList = useCallback( (newTitle: string) => {
+    const addTodoList = useCallback((newTitle: string) => {/*
         const action = addTodoListAC(newTitle)
-        Dispatch(action)
-    },[])
+        Dispatch(action)*/
+        Dispatch(addTodolistTC(newTitle))
+    }, [])
 
-    const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle)),[])
+    const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle)), [])
 
-    const editTodoListTitle = useCallback((listID: string, newTitle: string) => Dispatch(changeListTitleAC(listID, newTitle)),[])
+    const editTodoListTitle = useCallback((listID: string, newTitle: string) => Dispatch(changeTodolistTitleTC(listID, newTitle)), [])
 
 
     //UI

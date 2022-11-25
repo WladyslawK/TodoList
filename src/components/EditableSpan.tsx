@@ -14,7 +14,7 @@ export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callbac
     const [currentTitle, setCurrentTitle] = useState<string>(title)
 
     const changeEditHandler = () => {
-        if(edit === false) callback(currentTitle)
+        if(edit) callback(currentTitle)
         setEdit(!edit)
     }
 
@@ -24,7 +24,7 @@ export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callbac
 
     const changeCurrentTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setCurrentTitle(e.currentTarget.value)
-        callback(currentTitle)
+        //callback(currentTitle)
     }
     return (
         edit ?
