@@ -7,20 +7,94 @@ import {
     tasksReducer,
     TasksStateType
 } from "./TasksReducer";
-import {TaskPriorities, TaskStatuses} from "../../todoList-api";
+
 const listID1 = v1()
 const listID2 = v1()
 
-let tasks : TasksStateType = {
+
+enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+let tasks: TasksStateType = {
     [listID1]: [
-        {id: v1(), title: "HTML&CSS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1},
-        {id: v1(), title: "React", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1},
-        {id: v1(), title: "JS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1}
+        {
+            id: v1(),
+            title: "HTML&CSS",
+            status: 1,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID1
+        },
+        {
+            id: v1(),
+            title: "React",
+            status: 2,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID1
+        },
+        {
+            id: v1(),
+            title: "JS",
+            status: 1,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID1
+        }
     ],
     [listID2]: [
-        {id: v1(), title: "Milk", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
-        {id: v1(), title: "Bread", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
-        {id: v1(), title: "Meat", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
+        {
+            id: v1(),
+            title: "Milk",
+            status: 1,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID2
+        },
+        {
+            id: v1(),
+            title: "Bread",
+            status: 1,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID2
+        },
+        {
+            id: v1(),
+            title: "Meat",
+            status: 2,
+            addedDate: "",
+            order: 1,
+            deadline: "",
+            startDate: "",
+            description: "",
+            priority: 2,
+            todoListId: listID2
+        },
     ]
 }
 
@@ -64,7 +138,7 @@ test("Add new task to first TodoList", () => {
 test("change React task Status in TodoList 1", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2",true))
+    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2", 0))
 
 
     //expect
@@ -75,7 +149,7 @@ test("change React task Status in TodoList 1", () => {
 test("change title of the task in the TodoList 2", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, editTaskTitleAC(listID2, "5","Meat"))
+    const newTasks = tasksReducer(tasks, editTaskTitleAC(listID2, "5", "Meat"))
 
 
     //expect
