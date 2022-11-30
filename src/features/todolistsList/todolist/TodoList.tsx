@@ -1,14 +1,14 @@
 import React, {ChangeEvent, useCallback, useEffect} from 'react';
 import style from "./TodoList.module.css"
-import {AddItemForm} from "./AddItemForm";
-import {EditableSpan} from "./EditableSpan";
+import {AddItemForm} from "../../../components/addItemForm/AddItemForm";
+import {EditableSpan} from "../../../components/editableSpan/EditableSpan";
 import {Button, Checkbox, IconButton} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "../todoList-api";
-import {FilterType} from "./Reducers/TodoListsReducer";
-import {useAppDispatch} from "../redux/store";
-import {getTasksTC} from "./Reducers/TasksReducer";
+import {Task} from "./task/Task";
+import {TaskStatuses, TaskType} from "../../../api/todoList-api";
+import {FilterType} from "../TodoListsReducer";
+import {useAppDispatch} from "../../../app/store";
+import {getTasksTC} from "../TasksReducer";
 
 type todoListPropsType = {
     listId: string

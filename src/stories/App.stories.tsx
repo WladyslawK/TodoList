@@ -1,4 +1,4 @@
-import App from "../App";
+import {App} from "../app/App";
 import {ReduxStoreProviderDecorator} from "./ReduxStoreProviderDecorator";
 
 export default {

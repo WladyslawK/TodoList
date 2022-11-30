@@ -22,7 +22,7 @@ enum TaskStatuses {
 let tasks: TasksStateType = {
     [listID1]: [
         {
-            id: v1(),
+            id: "1",
             title: "HTML&CSS",
             status: 1,
             addedDate: "",
@@ -34,9 +34,9 @@ let tasks: TasksStateType = {
             todoListId: listID1
         },
         {
-            id: v1(),
+            id: "2",
             title: "React",
-            status: 2,
+            status: 1,
             addedDate: "",
             order: 1,
             deadline: "",
@@ -46,7 +46,7 @@ let tasks: TasksStateType = {
             todoListId: listID1
         },
         {
-            id: v1(),
+            id: "3",
             title: "JS",
             status: 1,
             addedDate: "",
@@ -60,7 +60,7 @@ let tasks: TasksStateType = {
     ],
     [listID2]: [
         {
-            id: v1(),
+            id: "4",
             title: "Milk",
             status: 1,
             addedDate: "",
@@ -72,7 +72,7 @@ let tasks: TasksStateType = {
             todoListId: listID2
         },
         {
-            id: v1(),
+            id: "5",
             title: "Bread",
             status: 1,
             addedDate: "",
@@ -84,7 +84,7 @@ let tasks: TasksStateType = {
             todoListId: listID2
         },
         {
-            id: v1(),
+            id: "6",
             title: "Meat",
             status: 2,
             addedDate: "",
@@ -102,12 +102,12 @@ let tasks: TasksStateType = {
 test("Task React should be deleted", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, deleteTaskAC(listID1, "2"))
+    const newTasks = tasksReducer(tasks, deleteTaskAC(listID1, "3"))
 
 
     //expect
     expect(newTasks[listID1].length).toBe(2)
-    expect(newTasks[listID1][1].title).toBe("JS")
+    expect(newTasks[listID1][1].title).toBe("React")
 })
 
 
@@ -118,7 +118,7 @@ test("Add new task to first TodoList", () => {
         addedDate: "",
         deadline: "",
         description: "",
-        id: "2",
+        id: "7",
         order: 2,
         priority: 2,
         startDate: "",
@@ -135,15 +135,15 @@ test("Add new task to first TodoList", () => {
     expect(newTasks[listID1][0].title).toBe("Angular")
 })
 
-test("change React task Status in TodoList 1", () => {
+test("change React task Status to Completed (2) in TodoList 1", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2", 0))
+    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2", TaskStatuses.Completed))
 
 
     //expect
-    expect(newTasks[listID1][1].title).toBe("Meat")
-    expect(newTasks[listID1][1].title).not.toBe(tasks[listID1][1].title)
+    expect(newTasks[listID1][1].status).toBe(TaskStatuses.Completed)
+    expect(newTasks[listID1][1].status).not.toBe(tasks[listID1][1].status)
 })
 
 test("change title of the task in the TodoList 2", () => {
@@ -153,6 +153,6 @@ test("change title of the task in the TodoList 2", () => {
 
 
     //expect
-    expect(newTasks[listID2][1].status).toBe(TaskStatuses.Completed)
-    expect(newTasks[listID2][1].status).not.toBe(tasks[listID1][1].status)
+    expect(newTasks[listID2][1].title).toBe("Meat")
+    expect(newTasks[listID2][1].title).not.toBe(tasks[listID1][1].title)
 })

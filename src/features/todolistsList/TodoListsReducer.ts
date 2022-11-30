@@ -1,5 +1,5 @@
 import {v1} from "uuid";
-import {todoListAPI, TodoListType} from "../../todoList-api";
+import {todoListAPI, TodoListType} from "../../api/todoList-api";
 import {Dispatch} from "redux";
 
 const DELETE_LIST = "DELETE-LIST"
@@ -40,7 +40,7 @@ export const changeFilterAC = (listID: string, filterValue: FilterType) =>
     ({type: CHANGE_FILTER, payload: {listID, filterValue}} as const)
 export const changeListTitleAC = (listID: string, newTitle: string) =>
     ({type: CHANGE_LIST_TITLE, payload: {listID, newTitle}} as const)
-export const addTodoListAC = (todolist: TodoListType) => ({type: ADD_TODOLIST, payload: {listId: v1(), todolist}} as const)
+export const addTodoListAC = (todolist: TodoListType) => ({type: ADD_TODOLIST, payload: {todolist}} as const)
 export const setTodoListsAC = (todoLists: Array<TodoListType>) => ({type: SET_TODOLISTS, todoLists} as const)
 
 //thunks

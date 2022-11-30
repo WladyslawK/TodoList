@@ -1,7 +1,7 @@
 import React from 'react';
 import {Provider} from "react-redux";
-import {AddItemForm} from "../components/AddItemForm";
-import {store} from "../redux/store";
+import {AddItemForm} from "../components/addItemForm/AddItemForm";
+import {store} from "../app/store";
 
 
 export default {

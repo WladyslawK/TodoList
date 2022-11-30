@@ -1,5 +1,5 @@
 import {ADD_TODOLIST, addTodoListACType, deleteListACType, SET_TODOLISTS, setTodoListsACType} from "./TodoListsReducer";
-import {tasksAPI, TaskStatuses, TaskType} from "../../todoList-api";
+import {tasksAPI, TaskStatuses, TaskType} from "../../api/todoList-api";
 import {Dispatch} from "redux";
 
 const DELETE_TASK = "DELETE-TASK"

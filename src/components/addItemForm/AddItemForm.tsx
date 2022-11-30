@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
-import style from "./TodoList.module.css"
+import style from "../../features/todolistsList/todolist/TodoList.module.css"
 import {Button, TextField} from "@mui/material";
 
 type AddItemFormType = {
