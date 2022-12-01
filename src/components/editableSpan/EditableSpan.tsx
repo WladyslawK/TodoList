@@ -6,14 +6,16 @@ type EditableSpanType = {
     title: string
     isDone?: boolean
     callback: (newTitle: string) => void
+    disabled?: boolean
 }
 
-export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callback}) => {
+export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callback, disabled = false}) => {
 
     const [edit, setEdit] = useState<boolean>(false)
     const [currentTitle, setCurrentTitle] = useState<string>(title)
 
     const changeEditHandler = () => {
+        if(disabled) return
         if(edit) callback(currentTitle)
         setEdit(!edit)
     }
@@ -40,7 +42,7 @@ export const EditableSpan: React.FC<EditableSpanType> = ({title, isDone, callbac
 
             <span
                 className={isDone ? style.completedTasks : ""} onDoubleClick={changeEditHandler}>
-                {currentTitle}
+                {title}
             </span>
 
     );

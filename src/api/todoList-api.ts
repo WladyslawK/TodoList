@@ -46,7 +46,7 @@ type GetTasksResponseType<T = {}> = {
     totalCount: number
 }
 
-type ResponseTaskType<T = {}> = {
+export type ResponseTaskType<T = {}> = {
     data: {item: T}
     fieldsErrors: string[]
     messages:string[]
@@ -64,6 +64,15 @@ export type TaskType = {
     status: TaskStatuses
     title: string
     todoListId: string
+}
+
+export type updateTaskType = {
+    description?: string
+    priority?: TaskPriorities
+    startDate?: string
+    status?: TaskStatuses
+    title?: string
+    deadline?: string
 }
 
 export enum TaskStatuses {

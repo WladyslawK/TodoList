@@ -11,11 +11,10 @@ import {rootReducerType, useAppDispatch} from "../../app/store";
 import {
     addTaskTC,
     deleteTaskTC,
-    editTaskTitleAC,
     TasksStateType,
     updateTaskTC
 } from "./TasksReducer";
-import {TaskStatuses, TaskType} from "../../api/todoList-api";
+import {TaskStatuses} from "../../api/todoList-api";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/addItemForm/AddItemForm";
 import {TodoList} from "./todolist/TodoList";
@@ -40,16 +39,15 @@ export const TodolistsList = () => {
 
     const addNewTask = useCallback((todoListId: string, title: string) => Dispatch(addTaskTC(todoListId, title)), [])
 
-    const changeTaskStatus = useCallback((todoListId: string, task: TaskType, status: TaskStatuses) => Dispatch(updateTaskTC(todoListId, task, status)), [])
+    const changeTaskStatus = useCallback((todoListId: string, taskId: string, status: TaskStatuses) => Dispatch(updateTaskTC(todoListId, taskId, {status})), [])
+
     const deleteList = useCallback((listId: string) => Dispatch(deleteTodolistTC(listId)), [])
 
-    const addTodoList = useCallback((newTitle: string) => {/*
-        const action = addTodoListAC(newTitle)
-        Dispatch(action)*/
+    const addTodoList = useCallback((newTitle: string) => {
         Dispatch(addTodolistTC(newTitle))
     }, [])
 
-    const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(editTaskTitleAC(todoListID, taskID, newTitle)), [])
+    const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(updateTaskTC(todoListID, taskID, {title: newTitle})), [])
 
     const editTodoListTitle = useCallback((listID: string, newTitle: string) => Dispatch(changeTodolistTitleTC(listID, newTitle)), [])
 
@@ -65,9 +63,7 @@ export const TodolistsList = () => {
                             <Grid key={list.id} item style={{padding: "20px"}}>
                                 <Paper style={{padding: "20px"}}>
                                     <TodoList
-                                        listId={list.id}
-                                        filter={list.filter}
-                                        title={list.title}
+                                        todolist={list}
                                         tasks={tasks[list.id]}
                                         deleteTask={deleteTask}
                                         addTask={addNewTask}

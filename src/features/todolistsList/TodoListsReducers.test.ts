@@ -3,7 +3,7 @@ import {
     addTodoListAC,
     changeFilterAC,
     changeListTitleAC,
-    deleteListAC,
+    deleteListAC, setTodoListEntityStatus,
     TodoListsDomainType,
     todoListsReducer
 } from "./TodoListsReducer";
@@ -13,8 +13,8 @@ import {TasksStateType} from "./TasksReducer";
     const listID1 = v1()
     const listID2 = v1()
     const lists: Array<TodoListsDomainType> = [
-        {id: listID1, title: "What to Learn", filter: "active", order: 0, addedDate: ""},
-        {id: listID2, title: "What to buy", filter: "all", order: 1, addedDate: ""},
+        {id: "2", title: "What to Learn", filter: "active", order: 0, addedDate: "", entityStatus: "idle"},
+        {id: "4", title: "What to buy", filter: "all", order: 1, addedDate: "", entityStatus: "idle"},
     ]
 
     let tasks : TasksStateType = {
@@ -70,4 +70,12 @@ test("Add a new list", ()=> {
 
     expect(correctedLists.length).toBe(3)
     expect(correctedLists[0].title).toBe("What should be done")
+})
+
+test("change todolist status to loading", ()=> {
+    //action
+    const correctedLists = todoListsReducer(lists, setTodoListEntityStatus("4", "loading"))
+
+    //expect
+    expect(correctedLists[1].entityStatus).toBe("loading")
 })

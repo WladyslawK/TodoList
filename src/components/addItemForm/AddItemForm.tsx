@@ -4,9 +4,10 @@ import {Button, TextField} from "@mui/material";
 
 type AddItemFormType = {
     callback: (newTitle: string) => void
+    disabled?: boolean
 }
 
-export const AddItemForm: React.FC<AddItemFormType> = React.memo(({callback}) => {
+export const AddItemForm: React.FC<AddItemFormType> = React.memo(({callback, disabled = false}) => {
     console.log("AddItemForm called")
     const [taskTextInput, SetTaskTextInput] = useState<string>("")
     const [error, SetError] = useState<boolean>(false)
@@ -51,12 +52,15 @@ export const AddItemForm: React.FC<AddItemFormType> = React.memo(({callback}) =>
                     value={taskTextInput}
                     onKeyDown={enterAddTaskHandler}
                     onChange={changeTaskInputHandler}
+                    disabled={disabled}
                 />
 
                 <Button
                     variant="contained"
                     onClick={addTaskHandler}
-                    style={btn}>+</Button>
+                    style={btn}
+                    disabled={disabled}>+</Button>
+
             </div>
             <div className={style.errorMessage}>
                 {error ? "Task should have title" : ""}

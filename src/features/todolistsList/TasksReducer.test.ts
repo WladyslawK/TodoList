@@ -1,11 +1,9 @@
 import {v1} from "uuid";
 import {
     addNewTaskAC,
-    changeTaskStatusAC,
     deleteTaskAC,
-    editTaskTitleAC,
     tasksReducer,
-    TasksStateType
+    TasksStateType, updateTaskAC
 } from "./TasksReducer";
 
 const listID1 = v1()
@@ -138,7 +136,7 @@ test("Add new task to first TodoList", () => {
 test("change React task Status to Completed (2) in TodoList 1", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, changeTaskStatusAC(listID1, "2", TaskStatuses.Completed))
+    const newTasks = tasksReducer(tasks, updateTaskAC(listID1, "2", {status: TaskStatuses.Completed}))
 
 
     //expect
@@ -149,7 +147,7 @@ test("change React task Status to Completed (2) in TodoList 1", () => {
 test("change title of the task in the TodoList 2", () => {
 
     //action
-    const newTasks = tasksReducer(tasks, editTaskTitleAC(listID2, "5", "Meat"))
+    const newTasks = tasksReducer(tasks, updateTaskAC(listID2, "5", {title: "Meat"}))
 
 
     //expect

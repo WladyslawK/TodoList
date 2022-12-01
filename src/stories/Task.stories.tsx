@@ -26,3 +26,17 @@ export const TaskBaseExample = () => {
     )
 
 }
+
+export const DisabledTask = () => {
+    return (
+        <Task
+            task={{id: "1", title: "React", status: 1, addedDate: "", deadline: "", description: "", order: 1, priority: 2, startDate: "", todoListId: "2"}}
+            changeStatus={changeStatusCallback}
+            deleteTask={deleteTaskCallback}
+            editTaskTitle={taskTitleCallback}
+            disabled={true}
+        />
+
+
+    )
+}

@@ -6,17 +6,17 @@ import {TaskStatuses, TaskType} from "../../../../api/todoList-api";
 
 type TaskTypeFC = {
     task: TaskType
-    changeStatus: (task: TaskType, newStatusValue: TaskStatuses) => void
+    changeStatus: (taskId: string, newStatusValue: TaskStatuses) => void
     deleteTask: (taskId: string) => void
     editTaskTitle: (taskId: string, newTitle: string) => void
-
+    disabled?: boolean
 }
 
-export const Task: React.FC<TaskTypeFC> = React.memo(({task, deleteTask, editTaskTitle, changeStatus}) => {
+export const Task: React.FC<TaskTypeFC> = React.memo(({task, deleteTask, editTaskTitle, changeStatus, disabled = false}) => {
     console.log("Task rendered")
 
     const changeStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeStatus(task, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
+        changeStatus(task.id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
     }
 
     const changeTaskTitleCallback = useCallback((newTitle: string) => editTaskTitle(task.id, newTitle), [editTaskTitle])
@@ -26,18 +26,21 @@ export const Task: React.FC<TaskTypeFC> = React.memo(({task, deleteTask, editTas
                 checked={task.status === TaskStatuses.Completed ? true : false}
                 onChange={changeStatusHandler}
                 inputProps={{ 'aria-label': 'controlled' }}
+                disabled={disabled}
             />
 
             <EditableSpan
                 title={task.title}
                 isDone={task.status === TaskStatuses.Completed ? true : false}
                 callback={changeTaskTitleCallback}
+                disabled={disabled}
             />
 
             <IconButton
                 aria-label="delete"
                 onClick={() => deleteTask(task.id)}
-                size="large">
+                size="large"
+                disabled={disabled}>
                 <Delete />
             </IconButton>
         </div>
