@@ -9,49 +9,45 @@ import {
 } from "./TodoListsReducer";
 import {TasksStateType} from "./TasksReducer";
 
-
-    const listID1 = v1()
-    const listID2 = v1()
     const lists: Array<TodoListsDomainType> = [
         {id: "2", title: "What to Learn", filter: "active", order: 0, addedDate: "", entityStatus: "idle"},
         {id: "4", title: "What to buy", filter: "all", order: 1, addedDate: "", entityStatus: "idle"},
     ]
 
     let tasks : TasksStateType = {
-        [listID1]: [
-            {id: v1(), title: "HTML&CSS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1},
-            {id: v1(), title: "JS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1},
-            {id: v1(), title: "React", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID1},
+        "2": [
+            {id: v1(), title: "HTML&CSS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "2"},
+            {id: v1(), title: "JS", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "2"},
+            {id: v1(), title: "React", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "2"},
         ],
-        [listID2]: [
-            {id: v1(), title: "Milk", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
-            {id: v1(), title: "Bread", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
-            {id: v1(), title: "Meat", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: listID2},
+        "4": [
+            {id: v1(), title: "Milk", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "4"},
+            {id: v1(), title: "Bread", status: 2, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "4"},
+            {id: v1(), title: "Meat", status: 1, addedDate: "", order: 1, deadline: "", startDate: "", description: "", priority: 2, todoListId: "4"},
         ]
     }
 
 test("Second TodoList should be deleted", () => {
 
     //action
-    const listsAfterDelete = todoListsReducer (lists, deleteListAC(listID2))
+    const listsAfterDelete = todoListsReducer (lists, deleteListAC("4"))
 
     //expect
     expect(listsAfterDelete.length).toBe(1)
-    expect(listsAfterDelete[0].id).toBe(listID1)
+    expect(listsAfterDelete[0].id).toBe("2")
     expect(listsAfterDelete.length).not.toBe(lists.length)
 })
 
 test("Filter of the first TodoList should be changed to completed", ()=> {
     //action
-    const correctedLists = todoListsReducer(lists, changeFilterAC(listID1, "completed"))
+    const correctedLists = todoListsReducer(lists, changeFilterAC("2", "completed"))
     //expect
-
     expect(correctedLists[0].filter).toBe("completed")
 })
 
 test("Title of the second TodoList should be changed", ()=> {
     //action
-    const correctedLists = todoListsReducer(lists, changeListTitleAC(listID2, "What should be done"))
+    const correctedLists = todoListsReducer(lists, changeListTitleAC("4", "What should be done"))
     //expect
 
     expect(correctedLists[1].title).toBe("What should be done")
