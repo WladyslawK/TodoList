@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import {rootReducerType} from "./store";
 import {StatusType} from "./app-reducer";
 import {ErrorSnackBar} from "../components/errorSnackBar/ErrorSnackBar";
+import {AppRoutes} from "../routes/AppRoutes";
 
 
 export function App() {
@@ -19,7 +20,7 @@ export function App() {
             <ButtonAppBar/>
             {status === "loading" && <LinearProgress/>}
             <Container fixed>
-                <TodolistsList/>
+                <AppRoutes/>
             </Container>
             <ErrorSnackBar/>
         </div>

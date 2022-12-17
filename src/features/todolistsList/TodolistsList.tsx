@@ -23,6 +23,7 @@ export const TodolistsList = () => {
 
     //BLL
     useEffect(() => {
+        if(true){}//isLoggedIn
         Dispatch(getTodoListsTC())
     }, [])
 
