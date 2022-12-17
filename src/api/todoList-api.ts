@@ -8,20 +8,6 @@ const instance = axios.create({
     }
 })
 
-export type TodoListType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-
-export type ResponseType<D = {}> = {
-    data: D
-    fieldsErrors: string[]
-    messages: string[]
-    resultCode: number
-}
-
 export const todoListAPI = {
     getToDoLists(){
         return instance.get<Array<TodoListType>>("todo-lists")
@@ -38,6 +24,63 @@ export const todoListAPI = {
     changeToDoListTitle(listID: string, title: string){
         return instance.put<ResponseType<{}>>(`todo-lists/${listID}`, {title})
     }
+}
+
+export const tasksAPI = {
+
+    getTasks(todolistId: string){
+        return instance.get<GetTasksResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`)
+    },
+
+    createTask(todolistId: string, title: string){
+        return instance.post<ResponseTaskType<TaskType>>(`todo-lists/${todolistId}/tasks`, {title})
+    },
+
+    deleteTask(todolistId: string, taskId: string){
+        return instance.delete<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+
+    changeTaskTitle(todolistId: string, taskId: string, title: string) {
+        return instance.put<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
+    },
+
+    updateTask(todoListId: string, taskId: string, model: {}){
+        return instance.put<ResponseTaskType<TaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
+    }
+}
+
+export const authAPI = {
+    logIn(data: LoginData){
+        return instance.post('auth/login', data)
+    },
+
+    logOut(){
+        return instance.delete('auth/login')
+    },
+
+    me(){
+        return instance.get('auth/me')
+    }
+}
+
+type LoginData = {
+    email: string
+    password: string
+    rememberMe?: boolean
+}
+
+export type TodoListType = {
+    id: string
+    title: string
+    addedDate: string
+    order: number
+}
+
+export type ResponseType<D = {}> = {
+    data: D
+    fieldsErrors: string[]
+    messages: string[]
+    resultCode: number
 }
 
 type GetTasksResponseType<T = {}> = {
@@ -88,29 +131,5 @@ export enum TaskPriorities{
     High = 2,
     Urgently = 3,
     Later = 4
-
-}
-
-export const tasksAPI = {
-
-    getTasks(todolistId: string){
-        return instance.get<GetTasksResponseType<TaskType>>(`todo-lists/${todolistId}/tasks`)
-    },
-
-    createTask(todolistId: string, title: string){
-        return instance.post<ResponseTaskType<TaskType>>(`todo-lists/${todolistId}/tasks`, {title})
-    },
-
-    deleteTask(todolistId: string, taskId: string){
-        return instance.delete<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
-    },
-
-    changeTaskTitle(todolistId: string, taskId: string, title: string) {
-        return instance.put<ResponseTaskType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`, {title})
-    },
-
-    updateTask(todoListId: string, taskId: string, model: {}){
-        return instance.put<ResponseTaskType<TaskType>>(`todo-lists/${todoListId}/tasks/${taskId}`, model)
-    }
 
 }
