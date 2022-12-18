@@ -18,13 +18,23 @@ import {TaskStatuses} from "../../api/todoList-api";
 import {Grid, Paper} from "@mui/material";
 import {AddItemForm} from "../../components/addItemForm/AddItemForm";
 import {TodoList} from "./todolist/TodoList";
+import {useNavigate} from "react-router-dom";
+import {PATH} from "../../constants/constants";
 
 export const TodolistsList = () => {
 
+    const isLoggedIn = useSelector<rootReducerType, boolean>(state => state.auth.isLoggedIn)
+
+    const navigate = useNavigate()
+
     //BLL
     useEffect(() => {
-        if(true){}//isLoggedIn
-        Dispatch(getTodoListsTC())
+        if(isLoggedIn){
+            Dispatch(getTodoListsTC())
+        }else{
+            navigate(PATH.LOGIN)
+        }
+
     }, [])
 
     const lists = useSelector<rootReducerType, Array<TodoListsDomainType>>(state => state.listsReducer)
