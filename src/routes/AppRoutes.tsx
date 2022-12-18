@@ -9,7 +9,7 @@ export const AppRoutes = () => {
         <Routes>
             <Route path={PATH.TODOLISTS} element={<TodolistsList/>}/>
             <Route path={PATH.LOGIN} element={<Login/>}/>
-
+            <Route path={PATH.ROOT} element={<TodolistsList/>}/>
         </Routes>
     );
 }
