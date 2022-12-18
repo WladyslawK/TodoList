@@ -51,19 +51,29 @@ export const tasksAPI = {
 
 export const authAPI = {
     logIn(data: LoginData){
-        return instance.post('auth/login', data)
+        return instance.post<ResponseType<LoginType>>('auth/login', data)
     },
 
     logOut(){
-        return instance.delete('auth/login')
+        return instance.delete<ResponseType>('auth/login')
     },
 
     me(){
-        return instance.get('auth/me')
+        return instance.get<ResponseType<MeResponseType>>('auth/me')
     }
 }
 
-type LoginData = {
+type MeResponseType = {
+    id: number
+    login: string
+    email: string
+}
+
+type LoginType = {
+    userId: number
+}
+
+export type LoginData = {
     email: string
     password: string
     rememberMe?: boolean
