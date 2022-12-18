@@ -9,22 +9,31 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
 import s from "./Login.module.css"
+import {loginTC} from "./auth-reducer";
+import {rootReducerType, useAppDispatch} from "../../app/store";
+import {useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {PATH} from "../../constants/constants";
+
+type LoginValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+    captcha?: boolean
+}
+
+
+type FormikErrorType = {
+    email?: string
+    password?: string
+    rememberMe?: string
+}
 
 export const Login = () => {
 
-    type LoginValuesType = {
-        email: string
-        password: string
-        rememberMe: boolean
-        captcha?: boolean
-    }
-
-
-    type FormikErrorType = {
-        email?: string
-        password?: string
-        rememberMe?: string
-    }
+    const dispatch = useAppDispatch()
+    const isLoggedIn = useSelector<rootReducerType, boolean>(state => state.auth.isLoggedIn)
+    const navigate = useNavigate()
 
     const validate = (values: LoginValuesType) => {
         let errors: FormikErrorType = {}
@@ -36,8 +45,6 @@ export const Login = () => {
 
         if(!values.password){
             errors.password = "Password is requires"
-        }else if(values.password.length < 8){
-            errors.password = "Password should be at lest 8 characters long"
         }
 
         return errors
@@ -52,11 +59,14 @@ export const Login = () => {
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
+            //alert(JSON.stringify(values, null, 2));
+            dispatch(loginTC({...formik.values}))
         },
     })
 
-    console.log(formik.values)
+    if (isLoggedIn) {
+        navigate(PATH.TODOLISTS)
+    }
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
@@ -76,10 +86,7 @@ export const Login = () => {
                         <TextField
                             label="Email"
                             margin="normal"
-                            name={"email"}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.email}
+                            {...formik.getFieldProps('email')}
                         />
                         {formik.touched.email && formik.errors.email ? <div className={s.error}>{formik.errors.email}</div> : ''}
 
@@ -87,10 +94,7 @@ export const Login = () => {
                             type="password"
                             label="Password"
                             margin="normal"
-                            name="password"
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur}
-                            value={formik.values.password}
+                            {...formik.getFieldProps('password')}
                         />
                         {formik.touched.password && formik.errors.password ? <div className={s.error}>{formik.errors.password}</div> : ''}
 

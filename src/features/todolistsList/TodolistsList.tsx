@@ -31,8 +31,6 @@ export const TodolistsList = () => {
     useEffect(() => {
         if(isLoggedIn){
             Dispatch(getTodoListsTC())
-        }else{
-            navigate(PATH.LOGIN)
         }
 
     }, [])
@@ -61,6 +59,10 @@ export const TodolistsList = () => {
     const editTaskTitle = useCallback((todoListID: string, taskID: string, newTitle: string) => Dispatch(updateTaskTC(todoListID, taskID, {title: newTitle})), [])
 
     const editTodoListTitle = useCallback((listID: string, newTitle: string) => Dispatch(changeTodolistTitleTC(listID, newTitle)), [])
+
+    if(!isLoggedIn){
+        navigate(PATH.LOGIN)
+    }
 
     return (
         <>
