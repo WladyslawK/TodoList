@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {rootReducerType, useAppDispatch} from "../../app/store";
 import {useSelector} from "react-redux";
-import { logOutTC } from '../../features/login/auth-reducer';
+import { logOutTC } from '../../features/login/authSlice';
 
 
 export function ButtonAppBar() {

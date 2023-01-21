@@ -6,10 +6,10 @@ import {Alert, Container, LinearProgress, Snackbar} from "@mui/material";
 import {TodolistsList} from "../features/todolistsList/TodolistsList";
 import {useSelector} from "react-redux";
 import {rootReducerType, useAppDispatch} from "./store";
-import {StatusType} from "./app-reducer";
+import {StatusType} from "./appSlice";
 import {ErrorSnackBar} from "../components/errorSnackBar/ErrorSnackBar";
 import {AppRoutes} from "../routes/AppRoutes";
-import {authMeTC} from "../features/login/auth-reducer";
+import {authMeTC} from "../features/login/authSlice";
 
 
 export function App() {
