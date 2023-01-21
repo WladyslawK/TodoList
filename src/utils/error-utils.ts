@@ -1,20 +1,20 @@
 import {ResponseType} from "../api/todoList-api";
 import {ThunkAppDispatchType} from "../app/store";
-import {changeAppStatus, setAppError} from "../app/app-reducer";
+import {changeAppStatus, setAppError} from "../app/appSlice";
 import axios, {AxiosError} from "axios";
 
 export const handleServerAppError = <T>(data: ResponseType<T>, dispatch: ThunkAppDispatchType) => {
         if(data.messages.length){
-            dispatch(setAppError(data.messages[0]))
+            dispatch(setAppError({error: data.messages[0]}))
         }else {
-            dispatch(setAppError("some error"))
+            dispatch(setAppError({error: 'some error'}))
         }
-        dispatch(changeAppStatus("failed"))
+        dispatch(changeAppStatus({status: 'failed'}))
 }
 
 export const handleNetworkError = (message: string, dispatch: ThunkAppDispatchType) => {
-    dispatch(setAppError(message))
-    dispatch(changeAppStatus("failed"))
+    dispatch(setAppError({error: message}))
+    dispatch(changeAppStatus({status: 'failed'}))
 }
 
 export const handleNetworkErrors = (e: Error | AxiosError, dispatch: ThunkAppDispatchType) => {
@@ -24,5 +24,5 @@ export const handleNetworkErrors = (e: Error | AxiosError, dispatch: ThunkAppDis
     } else {
         handleNetworkError(`Native error ${e.message}`, dispatch)
     }
-    dispatch(changeAppStatus('failed'))
+    dispatch(changeAppStatus({status: 'failed'}))
 }

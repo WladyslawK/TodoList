@@ -9,7 +9,7 @@ import {
 import {tasksAPI, TaskType, updateTaskType} from "../../api/todoList-api";
 import {Dispatch} from "redux";
 import {rootReducerType, ThunkAppDispatchType} from "../../app/store";
-import {changeAppStatus, setAppError} from "../../app/app-reducer";
+import {changeAppStatus, setAppError} from "../../app/appSlice";
 import {handleNetworkError, handleServerAppError} from "../../utils/error-utils";
 
 const DELETE_TASK = "DELETE-TASK"
@@ -69,45 +69,45 @@ export const setTasksAC = (todoListId: string, tasks: TaskType[]) =>
 
 //thunks
 export const getTasksTC = (todoListId: string) => (dispatch: Dispatch) => {
-    dispatch(changeAppStatus("loading"))
+    dispatch(changeAppStatus({status: "loading" }))
     tasksAPI.getTasks(todoListId)
         .then(res => {
 
             dispatch(setTasksAC(todoListId, res.data.items))
-            dispatch(changeAppStatus("succeeded"))
+            dispatch(changeAppStatus({status: "succeeded"}))
         }).catch(error => {
         dispatch(setAppError(error.message))
-        dispatch(changeAppStatus("failed"))
+        dispatch(changeAppStatus({status: "failed"}))
     })
 }
 
 export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
-    dispatch(changeAppStatus("loading"))
+    dispatch(changeAppStatus({status: "loading"}))
     dispatch(setTodoListEntityStatus(todolistId, "loading"))
     tasksAPI.deleteTask(todolistId, taskId)
         .then(res => {
             if (res.data.resultCode === 0) {
                 dispatch(deleteTaskAC(todolistId, taskId))
-                dispatch(changeAppStatus("succeeded"))
+                dispatch(changeAppStatus({status: "succeeded"}))
                 dispatch(setTodoListEntityStatus(todolistId, "succeeded"))
             }else{
                 handleServerAppError(res.data, dispatch)
             }
         }).catch(error => {
             dispatch(setAppError(error.message))
-            dispatch(changeAppStatus("failed"))
+            dispatch(changeAppStatus({status: "failed"}))
     })
 }
 
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: ThunkAppDispatchType) => {
-    dispatch(changeAppStatus("loading"))
+    dispatch(changeAppStatus({status: "loading"}))
     dispatch(setTodoListEntityStatus(todolistId, "loading"))
     tasksAPI.createTask(todolistId, title)
         .then(res => {
             if(res.data.resultCode === 0){
                 console.log(res.data)
                 dispatch(addNewTaskAC(todolistId, res.data.data.item))
-                dispatch(changeAppStatus("succeeded"))
+                dispatch(changeAppStatus({status: "succeeded"}))
                 dispatch(setTodoListEntityStatus(todolistId, "succeeded"))
             }else{
                 handleServerAppError(res.data, dispatch)
@@ -139,14 +139,14 @@ export const updateTaskTC = (todolistId: string, taskId: string, updates: update
     }
 
     dispatch(setTodoListEntityStatus(todolistId, "loading"))
-    dispatch(changeAppStatus("loading"))
+    dispatch(changeAppStatus({status: "loading"}))
     tasksAPI.updateTask(todolistId, task.id, model)
         .then(res => {
             console.log(res)
             if(res.data.resultCode === 0){
 
                 dispatch(updateTaskAC(todolistId, res.data.data.item.id, model))
-                dispatch(changeAppStatus("succeeded"))
+                dispatch(changeAppStatus({status: "succeeded"}))
                 dispatch(setTodoListEntityStatus(todolistId, "succeeded"))
             }else {
                 handleServerAppError(res.data, dispatch)
