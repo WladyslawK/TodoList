@@ -1,4 +1,4 @@
-import {appReducer, changeAppStatus, InitialAppType, setAppError} from "./app-reducer";
+import {appSlice, changeAppStatus, InitialAppType, setAppError} from "./appSlice";
 
 const initialAppState: InitialAppType= {
     status: "idle",
@@ -7,7 +7,7 @@ const initialAppState: InitialAppType= {
 
 test("change App status to loading", ()=> {
     //action
-    const AppWithChangedStatus = appReducer(initialAppState, changeAppStatus("loading"))
+    const AppWithChangedStatus = appSlice(initialAppState, changeAppStatus("loading"))
 
     //expect
     expect(AppWithChangedStatus.status).toBe("loading")
@@ -15,7 +15,7 @@ test("change App status to loading", ()=> {
 
 test("set App error to (some error)", () => {
 
-    const AppWithError = appReducer(initialAppState, setAppError("some error"))
+    const AppWithError = appSlice(initialAppState, setAppError("some error"))
 
 
     //expect
